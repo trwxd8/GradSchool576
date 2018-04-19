@@ -18,6 +18,8 @@ import scipy.signal as sps
 import matplotlib.pyplot as plt
 from scipy.ndimage import map_coordinates
 
+import math
+
 def convolve_1d(x, k):
   """
   Convolve vector x with kernel k
@@ -37,6 +39,31 @@ def convolve_1d(x, k):
   The output should be the same size as the input
   You can assume zero padding, and an odd-sized kernel
   """
+  
+  #Retrieve sizes for loops
+  vector_size = x.size
+  kernel_size = k.size
+  half_size = int((kernel_size-1)/2)
+        
+  #Create a temporary array that is zero-padded at the front and back for edges
+  results=np.zeros(vector_size+(2*half_size))
+  for i in range(0, vector_size):
+    results[half_size+i] = x[i]
+    
+  #Swap the kernel
+  j = kernel_size-1
+  for i in range(0,half_size):
+    temp = k[i]
+    k[i] = k[j]
+    k[j] = temp
+    j -= 1
+
+  #Calculate the convolution for each index and output into results
+  for i in range(0,vector_size):
+    accumulator = 0;
+    for j in range(0,kernel_size):
+      accumulator += (results[i+j]*k[j])
+    y[i] = accumulator
 
 
   """
@@ -66,6 +93,29 @@ def convolve_rows(im, k):
   You can assume zero padding, and an odd-sized kernel
   """
 
+  #Retrieve sizes for loops
+  height = im.shape[0]
+  width = im.shape[1]
+  depth = im.shape[2]
+  
+  #Initialize temporary array to hold convolved results
+  convol_depth = np.zeros(width)
+  
+  #Go through each row in the image
+  for h in range(0,height):
+      
+    #Copy the current row into holder
+    #Go through depth first, so each width can be grabbed and colvolved separated
+    for d in range(0,depth):
+      curr_depth=np.zeros(width)
+      for w in range(0,width):
+        curr_depth[w] = im[h][w][d]
+      
+      #Convolve and move results to output
+      convol_depth = convolve_1d(curr_depth, k)
+      for w in range(0,width):
+        im_out[h][w][d] = convol_depth[w]
+
 
   """
   *****************************************
@@ -88,7 +138,12 @@ def gauss_kernel(sigma):
   *** TODO: compute gaussian kernel at each x
   *******************************************
   """
-
+  
+  sigma_denom = (sigma * np.sqrt(2*math.pi))
+  
+  for i in range(0, len(x)):
+    exponent = -x[i]**2/(2*sigma**2)
+    gx[i] = 1 /sigma_denom * math.exp(exponent)
 
   """
   *******************************************
@@ -96,6 +151,54 @@ def gauss_kernel(sigma):
 
   gx = np.expand_dims(gx,0)
   return gx
+
+
+  """
+  *******************************************
+  *** ADDED: function to compute colvolution vertically for separable gaussian functionality
+  *******************************************
+  """
+  
+def convolve_columns(im, kernel):
+  """
+  Convolve image im with kernel k in vertical direction
+    
+  Inputs: im=input image (H, W, B)
+  k=1D convolution kernel (N)
+    
+  Outputs: im_out=output image (H, W, B)
+  """
+
+  #Retrieve sizes for loops
+  height = im.shape[0]
+  width = im.shape[1]
+  depth = im.shape[2]
+
+  #Initialize output image and temporary array to hold convolved results
+  im_copy=np.zeros_like(im)
+  convol_depth = np.zeros(height)
+
+  #Go through each column in the image
+  for w in range(0,width):
+      
+    #Copy the current row into holder
+    #Go through depth first, so each width can be grabbed
+    for d in range(0,depth):
+      curr_depth=np.zeros(height)
+      for h in range(0,height):
+        curr_depth[h] = im[h][w][d]
+      
+      #Convolve and move results to output
+      convol_depth = convolve_1d(curr_depth, kernel)
+      for h in range(0,height):
+        im_copy[h][w][d] = convol_depth[h]
+        
+  return im_copy
+
+  """
+  *******************************************
+  """
+
 
 def convolve_gaussian(im, sigma):
   """
@@ -109,6 +212,12 @@ def convolve_gaussian(im, sigma):
   ***************************************
   """
 
+  #Get kernel for convolution
+  kernel = gauss_kernel(sigma)
+  test_kernel = kernel[0]
+
+  imc = convolve_rows(im, test_kernel)
+  imc = convolve_columns(imc, test_kernel)
 
   """
   ***************************************
@@ -126,6 +235,22 @@ def compute_gradients(img):
   ***********************************************
   """
 
+  #Retrieve image dimensions
+  height = img.shape[0]
+  width = img.shape[1]
+  depth = img.shape[2]
+
+  #Go through each row in the image and subtract pixel from one to the left of it
+  for h in range(0,height):
+    for d in range(0,depth):
+      for w in range(1,width):
+        Ix[h][w][d] = img[h][w][d]-img[h][w-1][d]
+
+  #Go through each pixel and ubtract pixel from one above it
+  for h in range(1,height):
+    for d in range(0,depth):
+      for w in range(0,width):
+        Iy[h][w][d] = img[h][w][d]-img[h-1][w][d]
 
   """
   ***********************************************
