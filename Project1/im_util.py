@@ -18,6 +18,8 @@ import scipy.signal as sps
 import matplotlib.pyplot as plt
 from scipy.ndimage import map_coordinates
 
+import math
+
 def convolve_1d(x, k):
   """
   Convolve vector x with kernel k
@@ -37,6 +39,7 @@ def convolve_1d(x, k):
   The output should be the same size as the input
   You can assume zero padding, and an odd-sized kernel
   """
+  
 
 
   """
@@ -89,7 +92,6 @@ def gauss_kernel(sigma):
   *******************************************
   """
 
-
   """
   *******************************************
   """
@@ -97,6 +99,9 @@ def gauss_kernel(sigma):
   gx = np.expand_dims(gx,0)
   return gx
 
+
+    for d in range(0,depth):
+  """
 def convolve_gaussian(im, sigma):
   """
   2D gaussian convolution
@@ -108,6 +113,7 @@ def convolve_gaussian(im, sigma):
   *** TODO separable gaussian convolution
   ***************************************
   """
+
 
 
   """
@@ -126,6 +132,11 @@ def compute_gradients(img):
   ***********************************************
   """
 
+  height = img.shape[0]
+  width = img.shape[1]
+  depth = img.shape[2]
+
+  for h in range(0,height):
 
   """
   ***********************************************
