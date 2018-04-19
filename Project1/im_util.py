@@ -18,6 +18,7 @@ import scipy.signal as sps
 import matplotlib.pyplot as plt
 from scipy.ndimage import map_coordinates
 
+#add math for calculating gaussian kernel
 import math
 
 def convolve_1d(x, k):
