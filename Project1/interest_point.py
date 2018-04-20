@@ -18,6 +18,7 @@ from scipy.ndimage import map_coordinates
 from matplotlib.patches import Circle
 import matplotlib.pyplot as plt
 
+#Import functionality from im_util
 import im_util
 
 class InterestPointExtractor:
@@ -64,6 +65,62 @@ class InterestPointExtractor:
     **********************************************************
     """
 
+    #Set Harris Constant 
+    k = .06
+        
+    #Calculate the amount in the positive and negative direction the SSD should go
+    border = self.params['border_pixels']
+    half_border = int(border/2)
+    
+    #Get derivative versions of image in both x and y direction
+    Ix,Iy = im_util.compute_gradients(img)
+    
+    #Calculate squared derivations
+    xx_dev = Ix * Ix
+    yy_dev = Iy * Iy
+    xy_dev = Ix * Iy
+    
+    #Experiment: Find gaussian for each square
+    #sigma=4.0
+    #k_results=im_util.gauss_kernel(sigma)
+    #kernel = k_results[0]
+    #i_xx = Ix * Ix
+    #i_yy = Iy * Iy
+    #i_xy = Ix * Iy
+    #xx_dev = im_util.convolve_gaussian(i_xx, sigma)
+    #xy_dev = im_util.convolve_gaussian(i_xy, sigma)
+    #yy_dev = im_util.convolve_gaussian(i_yy, sigma)
+    
+    for i in range(0, H):
+      for j in range(0,W):
+        xx_sum = 0
+        xy_sum = 0
+        yy_sum = 0
+        
+        # Go through the neighborhood surrounding the pixel
+        for y_iter in((i-half_border), (i+half_border)):
+          for x_iter in((j-half_border), (j+half_border)): 
+            #correct index if it falls out of boundaries. Since border_pixels ignored in next step, these values being slightly off shouldn't cause issues
+            if(y_iter < 0):
+              y_iter = 0
+            elif(y_iter > (H-1)):
+              y_iter = H-1
+            if(x_iter < 0):
+              x_iter = 0
+            elif(x_iter > (W-1)):
+              x_iter = W-1
+            #Calculate the SSD value for the neighborhood
+            xx_sum += xx_dev[y_iter][x_iter] 
+            xy_sum += xy_dev[y_iter][x_iter] 
+            yy_sum += yy_dev[y_iter][x_iter] 
+            
+        #calculate eigen values and assign Harris value to pixel location
+        determinant = xx_sum*yy_sum - (xy_sum**2)
+        trace = xx_sum + yy_sum
+        #ip_fun[i][j] = determinant/trace
+        ip_fun[i][j] = determinant - k*(trace**2)
+
+        #Slide 19 from Presentation:http://www.cs.cornell.edu/courses/cs4670/2013fa/lectures/lec06_harris.pdf
 
     """
     **********************************************************
@@ -106,7 +163,52 @@ class InterestPointExtractor:
 
     Hint: try scipy filters.maximum_filter with im_util.disc_mask
     """
-
+    #disk_mask = im_util.disc_mask(border_pixels)
+    #filtered_ip_fun = filters.maximum_filter(ip_fun, footprint=disk_mask, mode='constant')
+    #[mn,mx]=np.percentile(filtered_ip_fun,[5,95])
+    #print("Min:",mn,"    Max:",mx)
+    #filtered_strength_threshold=np.percentile(ip_fun, self.params['strength_threshold_percentile'])  
+    
+    all_maximums = []
+    
+    buffer_pixels = border_pixels
+    
+    #Go through the image and find the maxima per neighborhood
+    for i in range(buffer_pixels,H-buffer_pixels, buffer_pixels):
+      for j in range(buffer_pixels,W-buffer_pixels, buffer_pixels):
+        
+        #Initialize at a value that will never able to be inserted into maximums
+        curr_value = -1000
+        curr_x = -1
+        curr_y = -1
+        
+        #Go through neighborhood to find largest value and index
+        for y_iter in range(i, i+buffer_pixels):
+          for x_iter in range(j, j+buffer_pixels):
+            if(ip_fun[y_iter][x_iter] >  curr_value):
+              curr_value = ip_fun[y_iter][x_iter]
+              curr_x = x_iter
+              curr_y = y_iter
+            
+        #If value is above the 95% threshold, add to list of maximums
+        if(curr_value > strength_threshold):
+          all_maximums.append((curr_value, curr_x, curr_y))
+       
+    #Sort all maximums in decreasing order, according to Harris value
+    maximums_decreasing = sorted(all_maximums, key=lambda x:x[0], reverse=True)
+    
+    #If count is larger than row/col size, limit
+    count = 0
+    maximums_count = len(maximums_decreasing)
+    if(maximums_count > 100):
+        maximums_count = 100
+    
+    # Grab top 100 maximas
+    for i in range(0, maximums_count):
+      value, x, y = maximums_decreasing[i]
+      row[count] = y
+      col[count] = x
+      count += 1
 
     """
     ***************************************************
@@ -153,7 +255,15 @@ class DescriptorExtractor:
       *** TODO: write code to extract descriptor at row, col
       ******************************************************
       """
-
+  
+      #go through the area surrounding the interest point and copy pixels into patch
+      p_y = 0
+      for y_iter in range(row-patch_size_div2, row+patch_size_div2):
+        p_x = 0
+        for x_iter in range(col-patch_size_div2, col+patch_size_div2):
+          patch[p_y][p_x] = img[y_iter][x_iter]
+          p_x += 1
+        p_y += 1
 
       """
       ******************************************************
