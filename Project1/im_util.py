@@ -165,7 +165,7 @@ def convolve_columns(im, kernel):
   Convolve image im with kernel k in vertical direction
     
   Inputs: im=input image (H, W, B)
-  k=1D convolution kernel (N)
+          k=1D convolution kernel (N)
     
   Outputs: im_out=output image (H, W, B)
   """
