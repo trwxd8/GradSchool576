@@ -30,6 +30,11 @@ class InterestPointExtractor:
     self.params['border_pixels']=10
     self.params['strength_threshold_percentile']=95
     self.params['supression_radius_frac']=0.01
+    """
+    Added param: interest_point_count=indicates the number of interest points to retrieve from strength results
+    """
+    self.params['interest_point_count']=200    
+   
 
   def find_interest_points(self, img):
     """
@@ -65,13 +70,249 @@ class InterestPointExtractor:
     **********************************************************
     """
     
-    ip_fun = self.dog_corner_function(img, H, W, 4.0, 6.4)
+    ip_fun = self.dog_corner_function(img, 4.0, 6.4)
+    #Uncomment to see results when using the harris corner detector algorithm
+    #ip_fun = self.harris_corner_function(img, ip_fun, False)
+    #ip_fun = self.harris_corner_function(img, ip_fun, True)
 
     """
-    **********************************************************
+    ***************************************************
     """
 
     return ip_fun
+
+   
+    """
+    **********************************************************
+    *** Added functions for testing different implementations
+    **********************************************************
+    """
+
+  def dog_corner_function(self, img, small_sigma, large_sigma):
+    """
+    Compute corner strength function in image im using Difference of Gaussian
+
+    Inputs: img=grayscale input image (H, W, 1)
+            small_sigma=smaller sigma for gaussian filter to be subtracted from the other
+            large_sigma=larger sigma for gaussian filter to subtract other from
+
+    Outputs: ip_fun=interest point strength function (H, W, 1)
+    """
+
+    small_gaussian = im_util.convolve_gaussian(img, small_sigma)
+    large_gaussian = im_util.convolve_gaussian(img, large_sigma)
+
+    return large_gaussian - small_gaussian  
+
+  def harris_corner_function(self, img, ip_fun, add_gaussian):
+    """
+    Compute corner strength function in image im using Harris corner detector
+
+    Inputs: img=grayscale input image (H, W, 1)
+            ip_fun=where to put the interest point strength function values
+
+    Outputs: ip_fun=interest point strength function (H, W, 1)
+    """
+    H, W, _ = img.shape
+        
+    #Set Harris Constant 
+    k = .06
+    
+    #Calculate the amount in the positive and negative direction the SSD should go
+    border = self.params['border_pixels']
+    half_border = int(border/2)
+    
+    #Get derivative versions of image in both x and y direction
+    Ix,Iy = im_util.compute_gradients(img)
+    
+    if (add_gaussian == False):
+        #Calculate squared derivations
+        xx_dev = Ix * Ix
+        yy_dev = Iy * Iy
+        xy_dev = Ix * Iy
+    else:
+        #Get kernel for Gaussian
+        sigma=4.0
+        k_results=im_util.gauss_kernel(sigma)
+        kernel = k_results[0]
+                
+        #Calculate squared derivations
+        i_xx = Ix * Ix
+        i_yy = Iy * Iy
+        i_xy = Ix * Iy
+        
+        #apply gaussian filter to each squared derivation
+        xx_dev = im_util.convolve_gaussian(i_xx, sigma)
+        xy_dev = im_util.convolve_gaussian(i_xy, sigma)
+        yy_dev = im_util.convolve_gaussian(i_yy, sigma)
+    
+    
+    for i in range(0, H):
+      for j in range(0,W):
+        xx_sum = 0
+        xy_sum = 0
+        yy_sum = 0
+        
+        #Verify whether or not the border size goes out of bounds and compensate
+        x_start = j-half_border
+        y_start = i-half_border
+        if(x_start < 0):
+              x_start = 0
+        if(y_start < 0):
+              y_start = 0
+        x_stop = j+half_border
+        y_stop = i+half_border
+        if(x_stop > (W-1)):
+              x_stop = W-1
+        if(y_stop > (H-1)):
+              y_stop = H-1
+        
+        # Go through the neighborhood surrounding the pixel
+        for y_iter in(y_start, y_stop):
+          for x_iter in(x_start, x_stop): 
+            #correct index if it falls out of boundaries. Since border_pixels ignored in next step, these values being slightly off shouldn't cause issues
+            if(y_iter < 0):
+              y_iter = 0
+            elif(y_iter > (H-1)):
+              y_iter = H-1
+            if(x_iter < 0):
+              x_iter = 0
+            elif(x_iter > (W-1)):
+              x_iter = W-1
+            #Calculate the SSD value for the neighborhood
+            xx_sum += xx_dev[y_iter][x_iter] 
+            xy_sum += xy_dev[y_iter][x_iter] 
+            yy_sum += yy_dev[y_iter][x_iter] 
+            
+        #calculate eigen values and assign Harris value to pixel location
+        determinant = xx_sum*yy_sum - (xy_sum**2)
+        trace = xx_sum + yy_sum
+        ip_fun[i][j] = determinant - k*(trace**2)
+        
+        #Uncomment to see results when using different strength value
+        #ip_fun[i][j] = determinant/trace
+
+    return ip_fun
+
+  def find_maxima_by_neighborhood(self, ip_fun, strength_threshold, neighborhood_size):
+    """
+    Find local maxima by looking through square neighborhoods of an image 
+    and adding the largest pixel to list of possible maxima if it meets the minimum strength 
+
+    Inputs: ip_fun=corner strength function (H, W, 1)
+            strength_threshold=minimal value interest point must reach to be added as possible maxima
+            neighborhood_size=length of side of square for each neighborhood (Ex size=10, neighborhood = (0,0) to (10,10), (10,0) to (20,10), etc...
+
+    Outputs: all_maximums=maximums of each neighborhood that meets strength threshold
+    """ 
+ 
+    H, W, _ = ip_fun.shape
+    all_maximums = []
+    border_pixels = self.params['border_pixels']
+
+    #calculate the count of neighborhoods that can fit in the image (excluding border pixels to ignore)
+    x_neighborhood_cnt = int((W-2*border_pixels) / neighborhood_size)
+    y_neighborhood_cnt = int((H-2*border_pixels) / neighborhood_size)
+    
+    #Add one because the division will round down, so overcompensate with additional neighborhood in each direction 
+    if ((W-2*border_pixels) % neighborhood_size != 0):
+      x_neighborhood_cnt += 1
+    if ((H-2*border_pixels) % neighborhood_size != 0):
+      y_neighborhood_cnt += 1
+    
+    #Go through the image and find the maxima per neighborhood
+    for i in range(0, y_neighborhood_cnt):
+      for j in range(0, x_neighborhood_cnt):
+        x_start = j * neighborhood_size
+        y_start = i * neighborhood_size
+        
+        #Initialize at a value that will never able to be inserted into maximums
+        max_value = -1000
+        max_x = -1
+        max_y = -1
+        
+        #Verify whether or not the neighborhood size goes out of bounds and compensate
+        x_stop = x_start+neighborhood_size
+        y_stop = y_start+neighborhood_size
+        if(x_stop > (W-1)):
+              x_stop = W-1
+        if(y_stop > (H-1)):
+              y_stop = H-1
+                
+        #Go through neighborhood to find largest value and index
+        for y_iter in range(y_start, y_stop):
+          for x_iter in range(x_start, x_stop):
+            if(ip_fun[y_iter][x_iter] >  max_value):
+              max_value = ip_fun[y_iter][x_iter]
+              max_x = x_iter
+              max_y = y_iter
+            
+        #If value is above the 95% threshold, add to list of maximums
+        if(max_value > strength_threshold):
+          all_maximums.append((max_value, max_x, max_y))
+    
+    return all_maximums
+        
+  def find_maxima_by_pixel(self, ip_fun, strength_threshold,  neighborhood_size):
+    """
+    Find local maxima by looking at each pixel and seeing if it is the largest pixel in the surrounding area 
+    and adding the largest pixel to list of possible maxima if it meets the minimum strength 
+
+    Inputs: ip_fun=corner strength function (H, W, 1)
+            strength_threshold=minimal value interest point must reach to be added as possible maxima
+            neighborhood_size= length of side of square that is centered around each pixel
+
+    Outputs: all_maximums=maximums of each neighborhood that meets strength threshold
+    """ 
+ 
+    H, W, _ = ip_fun.shape
+    all_maximums = []
+    border_pixels = self.params['border_pixels']
+    
+    #Calculate count to go in each direction around pixel location
+    half_size = int(neighborhood_size/2)
+    
+    #Go through the image and find the maxima per neighborhood
+    for i in range(border_pixels,H-border_pixels):
+      for j in range(border_pixels,W-border_pixels):
+        
+        #If pixel can't be a local maxima, don't check against neighbors
+        curr_value = ip_fun[i][j]
+        if(curr_value < strength_threshold):
+          continue
+
+        #Set flag indicating whether or not it is a max
+        curr_max = True
+        
+        #Verify whether or not the border size goes out of bounds and compensate
+        x_start = j-half_size
+        y_start = i-half_size
+        if(x_start < 0):
+              x_start = 0
+        if(y_start < 0):
+              y_start = 0
+        x_stop = j+half_size
+        y_stop = i+half_size
+        if(x_stop > (W-1)):
+              x_stop = W-1
+        if(y_stop > (H-1)):
+              y_stop = H-1
+        
+        # Go through the neighborhood surrounding the pixel
+        for y_iter in range(y_start, y_stop):
+          for x_iter in range(x_start, x_stop): 
+            #if value is found greater than the current pixel, mark as non-max and stop checking other pixels
+            if(ip_fun[y_iter][x_iter] >  curr_value):
+              curr_max = False
+              break
+          if(curr_max == False):
+            break
+            
+        #Pixel is greater than all neighbors and meets threshold, so add
+        if(curr_max == True):
+          all_maximums.append((curr_value, j, i))
+  
+    return all_maximums
 
   #def harris_corner_function(self, img):
         
@@ -113,9 +354,13 @@ class InterestPointExtractor:
     row = []
     col = []
 
+    # ADDED: interest point count for use when declaring results size
+    ip_count = self.params['interest_point_count']
+    
     # FORNOW: random row and column coordinates
-    row = np.random.randint(0,H,100)
-    col = np.random.randint(0,W,100)
+    # CHANGED: to use ip_count instead of hard coded 100
+    row = np.random.randint(0,H,ip_count)
+    col = np.random.randint(0,W,ip_count)
 
     """
     ***************************************************
@@ -124,47 +369,29 @@ class InterestPointExtractor:
 
     Hint: try scipy filters.maximum_filter with im_util.disc_mask
     """
-    #disk_mask = im_util.disc_mask(border_pixels)
-    #filtered_ip_fun = filters.maximum_filter(ip_fun, footprint=disk_mask, mode='constant')
-    #[mn,mx]=np.percentile(filtered_ip_fun,[5,95])
-    #print("Min:",mn,"    Max:",mx)
-    #filtered_strength_threshold=np.percentile(ip_fun, self.params['strength_threshold_percentile'])  
+
+    #Calculate size around pixel to be searched 
+    area_length = int(2.5*suppression_radius_pixels)
     
-    all_maximums = []
-    
-    buffer_pixels = 3*border_pixels
-    
-    #Go through the image and find the maxima per neighborhood
-    for i in range(buffer_pixels,H-buffer_pixels, buffer_pixels):
-      for j in range(buffer_pixels,W-buffer_pixels, buffer_pixels):
-        
-        #Initialize at a value that will never able to be inserted into maximums
-        curr_value = -1000
-        curr_x = -1
-        curr_y = -1
-        
-        #Go through neighborhood to find largest value and index
-        for y_iter in range(i, i+buffer_pixels):
-          for x_iter in range(j, j+buffer_pixels):
-            if(ip_fun[y_iter][x_iter] >  curr_value):
-              curr_value = ip_fun[y_iter][x_iter]
-              curr_x = x_iter
-              curr_y = y_iter
-            
-        #If value is above the 95% threshold, add to list of maximums
-        if(curr_value > strength_threshold):
-          all_maximums.append((curr_value, curr_x, curr_y))
+    all_maximums = self.find_maxima_by_pixel(ip_fun, strength_threshold, area_length)
+    #Uncomment to see results when using the maxima per neighborhood results
+    #all_maximums = self.find_maxima_by_neighborhood(ip_fun, strength_threshold, area_length)
        
-    #Sort all maximums in decreasing order, according to Harris value
+    #Sort all maximums in decreasing order, according to strength value
     maximums_decreasing = sorted(all_maximums, key=lambda x:x[0], reverse=True)
     
     #If count is larger than row/col size, limit
     count = 0
     maximums_count = len(maximums_decreasing)
-    if(maximums_count > 100):
-        maximums_count = 100
+    print("maxima size:",maximums_count)
+    if(maximums_count > ip_count):
+        maximums_count = ip_count
+    elif(maximums_count < ip_count):
+        #reformat other pixels in case extra found (i.e. don't include random values that aren't interest points)
+        row = np.random.randint(0,H,maximums_count)
+        col = np.random.randint(0,W,maximums_count)
     
-    # Grab top 100 maximas
+    # Grab top maximas
     for i in range(0, maximums_count):
       value, x, y = maximums_decreasing[i]
       row[count] = y
@@ -184,7 +411,8 @@ class DescriptorExtractor:
   def __init__(self):
     self.params={}
     self.params['patch_size']=8
-    self.params['ratio_threshold']=1.0
+    #Changed: ratio_threshold from hardcoded 1.0 for better results
+    self.params['ratio_threshold']=0.90
 
   def get_descriptors(self, img, ip):
     """
