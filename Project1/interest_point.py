@@ -314,6 +314,22 @@ class InterestPointExtractor:
   
     return all_maximums
 
+  #def harris_corner_function(self, img):
+        
+  def dog_corner_function(self, img, height, width, sig1, sig2):
+    """
+    Compute corner strength function in image im using Difference of Gaussian
+
+    Inputs: img=grayscale input image (H, W, 1)
+
+    Outputs: ip_fun=interest point strength function (H, W, 1)
+    """
+
+    small_gaussian = im_util.convolve_gaussian(img, sig1)
+    large_gaussian = im_util.convolve_gaussian(img, sig2)
+
+    return large_gaussian - small_gaussian  
+
   def find_local_maxima(self, ip_fun):
     """
     Find local maxima in interest point strength function
