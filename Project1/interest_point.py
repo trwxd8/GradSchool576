@@ -64,69 +64,30 @@ class InterestPointExtractor:
     *** TODO: write code to compute a corner strength function
     **********************************************************
     """
-
-    #Set Harris Constant 
-    k = .06
-        
-    #Calculate the amount in the positive and negative direction the SSD should go
-    border = self.params['border_pixels']
-    half_border = int(border/2)
     
-    #Get derivative versions of image in both x and y direction
-    Ix,Iy = im_util.compute_gradients(img)
-    
-    #Calculate squared derivations
-    xx_dev = Ix * Ix
-    yy_dev = Iy * Iy
-    xy_dev = Ix * Iy
-    
-    #Experiment: Find gaussian for each square
-    #sigma=4.0
-    #k_results=im_util.gauss_kernel(sigma)
-    #kernel = k_results[0]
-    #i_xx = Ix * Ix
-    #i_yy = Iy * Iy
-    #i_xy = Ix * Iy
-    #xx_dev = im_util.convolve_gaussian(i_xx, sigma)
-    #xy_dev = im_util.convolve_gaussian(i_xy, sigma)
-    #yy_dev = im_util.convolve_gaussian(i_yy, sigma)
-    
-    for i in range(0, H):
-      for j in range(0,W):
-        xx_sum = 0
-        xy_sum = 0
-        yy_sum = 0
-        
-        # Go through the neighborhood surrounding the pixel
-        for y_iter in((i-half_border), (i+half_border)):
-          for x_iter in((j-half_border), (j+half_border)): 
-            #correct index if it falls out of boundaries. Since border_pixels ignored in next step, these values being slightly off shouldn't cause issues
-            if(y_iter < 0):
-              y_iter = 0
-            elif(y_iter > (H-1)):
-              y_iter = H-1
-            if(x_iter < 0):
-              x_iter = 0
-            elif(x_iter > (W-1)):
-              x_iter = W-1
-            #Calculate the SSD value for the neighborhood
-            xx_sum += xx_dev[y_iter][x_iter] 
-            xy_sum += xy_dev[y_iter][x_iter] 
-            yy_sum += yy_dev[y_iter][x_iter] 
-            
-        #calculate eigen values and assign Harris value to pixel location
-        determinant = xx_sum*yy_sum - (xy_sum**2)
-        trace = xx_sum + yy_sum
-        #ip_fun[i][j] = determinant/trace
-        ip_fun[i][j] = determinant - k*(trace**2)
-
-        #Slide 19 from Presentation:http://www.cs.cornell.edu/courses/cs4670/2013fa/lectures/lec06_harris.pdf
+    ip_fun = self.dog_corner_function(img, H, W, 4.0, 6.4)
 
     """
     **********************************************************
     """
 
     return ip_fun
+
+  #def harris_corner_function(self, img):
+        
+  def dog_corner_function(self, img, height, width, sig1, sig2):
+    """
+    Compute corner strength function in image im using Difference of Gaussian
+
+    Inputs: img=grayscale input image (H, W, 1)
+
+    Outputs: ip_fun=interest point strength function (H, W, 1)
+    """
+
+    small_gaussian = im_util.convolve_gaussian(img, sig1)
+    large_gaussian = im_util.convolve_gaussian(img, sig2)
+
+    return large_gaussian - small_gaussian  
 
   def find_local_maxima(self, ip_fun):
     """
@@ -171,7 +132,7 @@ class InterestPointExtractor:
     
     all_maximums = []
     
-    buffer_pixels = border_pixels
+    buffer_pixels = 3*border_pixels
     
     #Go through the image and find the maxima per neighborhood
     for i in range(buffer_pixels,H-buffer_pixels, buffer_pixels):
