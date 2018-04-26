@@ -20,6 +20,8 @@ import im_util
 import interest_point
 import geometry
 
+import math
+
 class RANSAC:
   """
   Find 2-view consistent matches using RANSAC
@@ -51,7 +53,26 @@ class RANSAC:
     ************************************************
     """
 
+    #Transform the points in P1 to be ground truth   
+    p1h = geometry.hom(p1)
+    p1S = np.dot(H, p1h)
+    p1t = geometry.unhom(p1S) 
+    
+    #Calculate the distance between each point
+    _, cols = p1.shape
+    for i in range(0, cols):
+      x_diff = p2[0][i] - p1t[0][i]
+      y_diff = p2[1][i] - p1t[1][i]
 
+      #This distance or the euclidean model( sprt(E(xi-yi)^2))?
+      distance = math.sqrt((x_diff**2) + (y_diff**2))
+    
+      #indicate whether the point is an inlier
+      if(distance > inlier_dist):
+        cons[i] = False
+      else:
+        cons[i] = True
+        
     """
     ************************************************
     """
@@ -76,6 +97,8 @@ class RANSAC:
     *** TODO: write code to compute similarity transform
     ****************************************************
     """
+    print(p1)
+    print(p2)
 
 
     """
