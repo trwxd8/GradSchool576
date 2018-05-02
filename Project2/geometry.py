@@ -34,30 +34,37 @@ def compute_rotation(ip1, ip2, K1, K2):
   **********************************************************************
   """
 
+  """
+   kandu1 = np.matmul(K1_inv, u1) 
+  kandu2 = np.matmul(K2_inv, u2)
+   
+  print("K&u:",kandu1)
+
+  kandu1_inv = np.linalg.inv(kandu1)
+  R = np.matmul(kandu2, kandu1_inv) 
+    
+  K_both = np.matmul(K1_inv, K2_inv)
+  H = np.matmul(K_both, R) 
+  """
+
   _, cols = ip1.shape
 
-  #Go through each pair of points in the image
-  #Pair, or sets of pairs?
-  #for i in range(0,cols):
-    #for j in range(i+1, cols):
-      #u1_i = [[ip1[0,i], ip1[0,j]], [ip1[1,i], ip1[1,j]], [1,1]]
-      #u2 = [[ip2[0,i], ip2[0,j]], [ip2[1,i], ip2[1,j]], [1,1]]
-    for i in range(0, cols):
-      u1_i = [ip1[0,i], ip1[1,i], 1]
-      u2 = [[ip2[0,i]], [ip2[1,i]], [1]]
+  K1_inv = np.linalg.inv(K1)
+  K2_inv = np.linalg.inv(K2)
 
-      #Find the inverses for equations
-      K1_i = np.linalg.inv(K1)
-      K2_i = np.linalg.inv(K2)
-    #u1_i = np.linalg.inv(u1)
+  u1 = hom(ip1)
+  u2 = hom(ip2)
+
+  unit1 = np.matmul(K1_inv, u1) 
+  unit2 = np.matmul(K2_inv, u2)
+  
+  print(unit1)
+  unit1_inv = np.linalg.inv(unit1)
+  #R = unit2 / unit1 
     
-      p_dot = np.matmul(u1_i, u2)
-      K_dot_r = np.matmul(K1, K2_i)
+  K_both = np.matmul(K1_inv, K2_inv)
+  H = np.matmul(K_both, R) 
  
-    R = np.matmul(p_dot, K_dot_r)
-      
-    K_dot_h = np.matmul(K2, K1_i)
-    H = np.matmul(K_dot_h, R) 
 
   """
   **********************************************************************
