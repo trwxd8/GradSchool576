@@ -53,13 +53,13 @@ class RANSAC:
     ************************************************
     """
 
+    cons2 = []
+    
     #Transform the points in P1 to be ground truth   
     p1h = geometry.hom(p1)
     p1S = np.dot(H, p1h)
     p1t = geometry.unhom(p1S) 
-    #print("p1t shape:", p1t.shape)
-
-	
+    
     #Calculate the distance between each point
     _, cols = p1.shape
     for i in range(0, cols):
@@ -71,15 +71,15 @@ class RANSAC:
     
       #indicate whether the point is an inlier
       if(distance > inlier_dist):
-        cons[i] = False
+        cons2.append(False)
       else:
-        cons[i] = True
-        
+        cons2.append(True)
+    
     """
     ************************************************
     """
 
-    return cons
+    return cons2
 	
   def compute_similarity_28_63(self,p1,p2):
     S = np.eye(3,3)
@@ -262,29 +262,25 @@ class RANSAC:
       diff_x = p2[0][i] - p1[0][i]
       diff_y = p2[1][i] - p1[1][i]
       dx.append([diff_x])
-      dx.append([diff_y])	  
+      dx.append([diff_y])  
       #print("J:", J)
       #print("dx:", dx)
-	  	 
-	
-    """TOM ATTEMPT"""
 
+    # Get the transpose of the Jacobian, and use it to calculate the A and b portions of the equation Ap = b
     J_t = np.transpose(J)
     A = np.matmul(J_t, J)
-    A_i = np.linalg.inv(A)
     b = np.matmul(J_t, dx)
+
+    #Get the inverse of A and multiply by b to get (tx, ty, a, b)
+    A_i = np.linalg.inv(A)
     params = np.matmul(A_i, b)
-	
-    #params = np.dot(A_pi, b)
-    #print("params_mine:", params)
-    #print("a_pi:",A_pi)
     
+    # assign parameters to variables
     tx = params[0][0]
     ty = params[1][0] 
     a = params[2][0]
     b = params[3][0]
     #print("result: tx=",tx," ty=",ty," a=",a," b=",b)
-    #np.dot(inv_A, sum_b)
 
     #for i in range (0,point_cnt):
     #  print("transforming (",p1[0][i],",",p1[1][i],")  to (",p2[0][i],",",p2[1][i],")")
@@ -293,7 +289,7 @@ class RANSAC:
     #  b*p1[i][1] + a*p1[i][0] + ty ))
 	
                 
-    #Return similarity matrix
+    #Return similarity matrix using parameters extracted
     S = [[1+a, -b, tx], [ b, 1+a, ty ], [0, 0, 1]]
 
     """
@@ -386,27 +382,22 @@ class RANSAC:
     _, cols1 = ip1.shape
     _, colsm = ipm.shape
 
-	
+
     curr_max_consistent = -1
-	
+
     for i1 in range(0,cols1):
       for j1 in range(i1+1, cols1):
-        for im in range(0,colsm):
-          for jm in range(im+1, colsm):
-            curr_ip1_pair = []
-            curr_ipm_pair = []
+        curr_ip1_pair = [[ip1[0,i1], ip1[0,j1]], [ip1[1,i1], ip1[1,j1]]]
+        curr_ipm_pair = [[ipm[0,i1], ipm[0,j1]], [ipm[1,i1], ipm[1,j1]]]
 
-            curr_ip1_pair = [[ip1[0,i1], ip1[0,j1]], [ip1[1,i1], ip1[1,j1]]]
-            curr_ipm_pair = [[ipm[0,im], ipm[0,jm]], [ipm[1,im], ipm[1,jm]]]
-		
-            #print(curr_ip1_pair,"  to  ",curr_ipm_pair)
-            curr_S=self.compute_similarity(curr_ip1_pair,curr_ipm_pair)
-            curr_inliers=self.consistent(curr_S,ip1,ipm)
-            num_consistent=np.sum(curr_inliers)
-            if(num_consistent > curr_max_consistent):
-              curr_max_consistent = num_consistent
-              S_best = curr_S
-              inliers_best = curr_inliers
+        #print(curr_ip1_pair,"  to  ",curr_ipm_pair)
+        curr_S=self.compute_similarity(curr_ip1_pair,curr_ipm_pair)
+        curr_inliers=self.consistent(curr_S,ip1,ipm)
+        num_consistent=np.sum(curr_inliers)
+        if(num_consistent > curr_max_consistent):
+          curr_max_consistent = num_consistent
+          S_best = curr_S
+          inliers_best = curr_inliers
 
     """
     *****************************************************

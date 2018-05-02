@@ -34,6 +34,30 @@ def compute_rotation(ip1, ip2, K1, K2):
   **********************************************************************
   """
 
+  _, cols = ip1.shape
+
+  #Go through each pair of points in the image
+  #Pair, or sets of pairs?
+  #for i in range(0,cols):
+    #for j in range(i+1, cols):
+      #u1_i = [[ip1[0,i], ip1[0,j]], [ip1[1,i], ip1[1,j]], [1,1]]
+      #u2 = [[ip2[0,i], ip2[0,j]], [ip2[1,i], ip2[1,j]], [1,1]]
+    for i in range(0, cols):
+      u1_i = [ip1[0,i], ip1[1,i], 1]
+      u2 = [[ip2[0,i]], [ip2[1,i]], [1]]
+
+      #Find the inverses for equations
+      K1_i = np.linalg.inv(K1)
+      K2_i = np.linalg.inv(K2)
+    #u1_i = np.linalg.inv(u1)
+    
+      p_dot = np.matmul(u1_i, u2)
+      K_dot_r = np.matmul(K1, K2_i)
+ 
+    R = np.matmul(p_dot, K_dot_r)
+      
+    K_dot_h = np.matmul(K2, K1_i)
+    H = np.matmul(K_dot_h, R) 
 
   """
   **********************************************************************
