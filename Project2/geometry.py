@@ -34,37 +34,43 @@ def compute_rotation(ip1, ip2, K1, K2):
   **********************************************************************
   """
 
-  """
-   kandu1 = np.matmul(K1_inv, u1) 
-  kandu2 = np.matmul(K2_inv, u2)
-   
-  print("K&u:",kandu1)
-
-  kandu1_inv = np.linalg.inv(kandu1)
-  R = np.matmul(kandu2, kandu1_inv) 
-    
-  K_both = np.matmul(K1_inv, K2_inv)
-  H = np.matmul(K_both, R) 
-  """
-
   _, cols = ip1.shape
-
+    
+  #ip1_means = np.mean(ip1, 1) 
+  #ip2_means = np.mean(ip2, 1)
+  #print("means 1:", ip1_means)
+  #print("means 2:", ip2_means) 
+    
+  #for i in range(0, cols):
+  #  ip1
+    
   K1_inv = np.linalg.inv(K1)
   K2_inv = np.linalg.inv(K2)
 
   u1 = hom(ip1)
   u2 = hom(ip2)
 
-  unit1 = np.matmul(K1_inv, u1) 
-  unit2 = np.matmul(K2_inv, u2)
-  
-  print(unit1)
-  unit1_inv = np.linalg.inv(unit1)
-  #R = unit2 / unit1 
+  rayset1 = np.matmul(K1_inv, u1) 
+  rayset2 = np.matmul(K2_inv, u2)
+
+  rayset1_t = np.transpose(rayset1)
+
+  covariance = np.matmul(rayset2, rayset1_t)
     
-  K_both = np.matmul(K1_inv, K2_inv)
-  H = np.matmul(K_both, R) 
- 
+  u, _, vt = np.linalg.svd(covariance, compute_uv=True)
+        
+  R = np.matmul(u, vt)  
+  H_part = np.matmul(K2, R)
+  H = np.matmul(H_part, K1_inv) 
+   
+  #R=H=np.eye(3,3) 
+    
+  """
+    [mn,mx]=np.percentile(ip_fun,[5,95])
+    small_val=1e-9
+    ip_fun_norm=(ip_fun-mn)/(mx-mn+small_val)
+    ip_fun_norm=np.maximum(np.minimum(ip_fun_norm,1.0),0.0)    
+  """
 
   """
   **********************************************************************

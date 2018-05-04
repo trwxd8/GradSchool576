@@ -60,15 +60,8 @@ class PanoramaStitcher:
     """
     Perform global alignment
     """
-
     # FORNOW identity rotations
     num_images = len(self.images)
-    
-    match_indices = np.zeros(num_images)
-    transformed_indices = np.zeros(num_images)
-    identity_index = 4
-    dependency_dict = {}
-    
     for i in range(num_images):
       self.R_matrices[i]=np.eye(3,3)
 
@@ -84,8 +77,8 @@ class PanoramaStitcher:
           #for k in range(4):
             #print(self.matches[i][j][k])
     
-      
-      """
+      if(i > 0):
+        """
         #Extract matches from the local parameters
         ip1 = np.matrix([self.matches[i-1][i][0], self.matches[i-1][i][1]])
         ip2 = np.matrix([self.matches[i-1][i][2], self.matches[i-1][i][3]])
@@ -100,35 +93,16 @@ class PanoramaStitcher:
         self.R_matrices[i][1] = curr_R[1]
         self.R_matrices[i][2] = curr_R[2]
       
-      """
-      curr_max = -1
-      curr_idx = -1
-        
-      #Find image with largest amount of matches
-      for j in range(num_images):
-        if(self.num_matches[i][j] > curr_max):
-          curr_max = self.num_matches[i][j]
-          curr_idx = j
+        """
+        curr_max = -1
+        curr_idx = -1
     
-        #REMOVE TO GET RID OF HARDCODED IDX
-        #curr_idx = 0
+        #Find image with largest amount of matches
+        for j in range(3):
+          if(self.num_matches[i][j] > curr_max):
+            curr_max = self.num_matches[i][j]
+            curr_idx = j
     
-      #Mark which index should be used for rotation
-      match_indices[i] = curr_idx 
-        
-      #initialize entry for dependency dictionary
-      dependency_dict[i] = 0
-        
-    for i in range(num_images):
-      dependency_dict[match_indices[i]] += 1
-        
-    print(dependency_dict)
-       
-    #Skip the image to use as the identity matrix
-    if(i == identity_index):
-      transformed_indices[i] = 1
-    else:
-         
         #Extract matches from the local parameters
         ip1 = np.matrix([self.matches[i][curr_idx][0], self.matches[i][curr_idx][1]])
         ip2 = np.matrix([self.matches[i][curr_idx][2], self.matches[i][curr_idx][3]])
@@ -137,15 +111,13 @@ class PanoramaStitcher:
         K1 = geometry.get_calibration(self.images[i].shape, self.params['fov_degrees'])
         K2 = geometry.get_calibration(self.images[curr_idx].shape, self.params['fov_degrees'])
         curr_R, _ = geometry.compute_rotation(ip2, ip1, K2, K1)
-        
-        #Do not matrix multiply until the dependent matrix has been calculated
-        #curr_R = np.matmul(self.R_matrices[curr_idx], curr_R)
-        
+        curr_R = np.matmul(self.R_matrices[curr_idx], curr_R)
+        print("R for ",i," to ",curr_idx,":",curr_R)
         self.R_matrices[i][0] = curr_R[0]
         self.R_matrices[i][1] = curr_R[1]
         self.R_matrices[i][2] = curr_R[2]
         
-        """
+      """
       ***************************************************************
       """
 
