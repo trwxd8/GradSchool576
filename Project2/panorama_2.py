@@ -119,33 +119,85 @@ class PanoramaStitcher:
       #initialize entry for dependency dictionary
       dependency_dict[i] = 0
         
+    #sum up how many are dependent 
     for i in range(num_images):
       dependency_dict[match_indices[i]] += 1
         
     print(dependency_dict)
        
-    #Skip the image to use as the identity matrix
-    if(i == identity_index):
-      transformed_indices[i] = 1
-    else:
-         
-        #Extract matches from the local parameters
-        ip1 = np.matrix([self.matches[i][curr_idx][0], self.matches[i][curr_idx][1]])
-        ip2 = np.matrix([self.matches[i][curr_idx][2], self.matches[i][curr_idx][3]])
+    curr_max = -1
+    curr_idx = -1
+    
+    #Go through and find the 
+    for i in range(num_images):
+      #MAYBE add logic for matches
+      if(dependency_dict[i] > curr_max):
+        curr_idx = i
+        curr_max = dependency_dict[i]
+    
+        
+    identity_matrix = curr_idx
+    print("best starting match is ",identity_matrix)
+    transformed_indices[identity_matrix] = 1    
+    
+    
+    transform_order = []
+    #np.zeros(num_images-1)
+    transform_cnt = 0
+ 
+    print("indices content:",transformed_indices)
+    print("transform order:",transform_order)    
 
-        #Get the rotation for the best match
-        K1 = geometry.get_calibration(self.images[i].shape, self.params['fov_degrees'])
-        K2 = geometry.get_calibration(self.images[curr_idx].shape, self.params['fov_degrees'])
-        curr_R, _ = geometry.compute_rotation(ip2, ip1, K2, K1)
-        
-        #Do not matrix multiply until the dependent matrix has been calculated
-        #curr_R = np.matmul(self.R_matrices[curr_idx], curr_R)
-        
-        self.R_matrices[i][0] = curr_R[0]
-        self.R_matrices[i][1] = curr_R[1]
-        self.R_matrices[i][2] = curr_R[2]
-        
-        """
+    #go through 
+    while 0 in transformed_indices:
+        curr_cnt = transform_cnt
+        for i in range(num_images):
+          match_idx = int(match_indices[i])
+          print("match for",i," is ",match_idx)
+          #if dependent index is calculated and current index is not, then add to queue and 
+          if(transformed_indices[match_idx] == 1 and transformed_indices[i] == 0):
+            transform_order.append(i)
+            transform_cnt += 1
+            transformed_indices[i] = 1
+            
+        #If no transforms occur, use identity matrix instead
+        if (curr_cnt == transform_cnt and 0 in transformed_indices):
+          print("no matches found!!")
+          for i in range(num_images):
+            #if dependent index is going to be calculated, then add into the queue after
+            if(transformed_indices[i] == 0):
+                match_indices[i] = identity_matrix
+                transform_order.append(i)
+                transform_cnt += 1
+                transformed_indices[i] = 1
+
+        print("indices content:",transformed_indices)
+        print("transform order:",transform_order)    
+    
+        transform_list = list(transform_order)
+    #Go through and find the 
+    for i in transform_order:
+      match_idx = int(match_indices[i])
+      print("curr image is ",i,", transforming with ",match_idx)
+
+      #Extract matches from the local parameters
+      ip1 = np.matrix([self.matches[i][match_idx][0], self.matches[i][match_idx][1]])
+      ip2 = np.matrix([self.matches[i][match_idx][2], self.matches[i][match_idx][3]])
+
+      #Get the rotation for the best match
+      K1 = geometry.get_calibration(self.images[i].shape, self.params['fov_degrees'])
+      K2 = geometry.get_calibration(self.images[match_idx].shape, self.params['fov_degrees'])
+      curr_R, _ = geometry.compute_rotation(ip2, ip1, K2, K1)
+
+      #Do not matrix multiply until the dependent matrix has been calculated
+      curr_R = np.matmul(self.R_matrices[match_idx], curr_R)
+
+      self.R_matrices[i][0] = curr_R[0]
+      self.R_matrices[i][1] = curr_R[1]
+      self.R_matrices[i][2] = curr_R[2]
+      
+    
+      """
       ***************************************************************
       """
 
