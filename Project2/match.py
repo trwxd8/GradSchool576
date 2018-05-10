@@ -46,10 +46,11 @@ class ImageMatcher:
       im = images[i]
       img = np.mean(im, 2, keepdims=True)
       ip = ip_ex.find_interest_points(img)
-      print(' found '+str(ip.shape[1])+' interest points')
       interest_points.append(ip)
       desc = desc_ex.get_descriptors(img, ip)
       descriptors.append(desc)
+
+      
       if (self.params['draw_interest_points']):
         interest_point.draw_interest_points_file(im, ip, self.params['results_dir']+'/ip'+str(i)+'.jpg')
 
@@ -60,7 +61,8 @@ class ImageMatcher:
     print('[ match descriptors ]')
     matches = [[None]*num_images for _ in range(num_images)]
     num_matches = np.zeros((num_images, num_images))
-
+	
+	
     t0=time()
     rn = ransac.RANSAC()
 
@@ -88,4 +90,4 @@ class ImageMatcher:
     t1=time()
     print(' % .2f secs' % (t1-t0))
 
-    return matches, num_matches
+    return matches, num_matches, interest_points, descriptors
