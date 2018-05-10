@@ -82,6 +82,12 @@ def render_spherical(images, P_matrices, params={}):
   im_coords=np.zeros((3,render_height, render_width,4))
 
   for im,P in zip(images,P_matrices):
+  #for i in range(2):
+    #if(i != 0 and i != 3):
+      #continue
+    #im = images[i]
+    #P = P_matrices[i]
+    
     # compute coordinates u ~ P [X Y Z]
     uh=np.dot(wc,P.T)
     uh=uh[:, :, 0, :]

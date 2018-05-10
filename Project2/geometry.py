@@ -33,7 +33,31 @@ def compute_rotation(ip1, ip2, K1, K2):
   *** TODO: write code to compute 3D rotation between corresponding rays
   **********************************************************************
   """
+  _, cols = ip1.shape
+   
+  #Get inverse calibrations 
+  K1_inv = np.linalg.inv(K1)
+  K2_inv = np.linalg.inv(K2)
 
+  #Turn X,Y coordinates to X,Y,Z coordinates
+  u1 = hom(ip1)
+  u2 = hom(ip2)
+
+  #Turn coordinates into Rays 
+  rayset1 = np.matmul(K1_inv, u1) 
+  rayset2 = np.matmul(K2_inv, u2)
+
+  #Use transposed rayset to calculate covariance between the two raysets
+  rayset1_t = np.transpose(rayset1)
+  covariance = np.matmul(rayset2, rayset1_t)
+  
+  #Use Singular Value Decomposition results to calculate the value of Rotation  
+  u, _, vt = np.linalg.svd(covariance, compute_uv=True)
+  R = np.matmul(u, vt)  
+
+  #From the Rotation Matrix calulate the Homography
+  H_part = np.matmul(K2, R)
+  H = np.matmul(H_part, K1_inv) 
 
   """
   **********************************************************************
