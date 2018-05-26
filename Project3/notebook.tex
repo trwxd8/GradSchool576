@@ -1,0 +1,1535 @@
+
+% Default to the notebook output style
+
+    
+
+
+% Inherit from the specified cell style.
+
+
+
+
+    
+\documentclass[11pt]{article}
+
+    
+    
+    \usepackage[T1]{fontenc}
+    % Nicer default font (+ math font) than Computer Modern for most use cases
+    \usepackage{mathpazo}
+
+    % Basic figure setup, for now with no caption control since it's done
+    % automatically by Pandoc (which extracts ![](path) syntax from Markdown).
+    \usepackage{graphicx}
+    % We will generate all images so they have a width \maxwidth. This means
+    % that they will get their normal width if they fit onto the page, but
+    % are scaled down if they would overflow the margins.
+    \makeatletter
+    \def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth
+    \else\Gin@nat@width\fi}
+    \makeatother
+    \let\Oldincludegraphics\includegraphics
+    % Set max figure width to be 80% of text width, for now hardcoded.
+    \renewcommand{\includegraphics}[1]{\Oldincludegraphics[width=.8\maxwidth]{#1}}
+    % Ensure that by default, figures have no caption (until we provide a
+    % proper Figure object with a Caption API and a way to capture that
+    % in the conversion process - todo).
+    \usepackage{caption}
+    \DeclareCaptionLabelFormat{nolabel}{}
+    \captionsetup{labelformat=nolabel}
+
+    \usepackage{adjustbox} % Used to constrain images to a maximum size 
+    \usepackage{xcolor} % Allow colors to be defined
+    \usepackage{enumerate} % Needed for markdown enumerations to work
+    \usepackage{geometry} % Used to adjust the document margins
+    \usepackage{amsmath} % Equations
+    \usepackage{amssymb} % Equations
+    \usepackage{textcomp} % defines textquotesingle
+    % Hack from http://tex.stackexchange.com/a/47451/13684:
+    \AtBeginDocument{%
+        \def\PYZsq{\textquotesingle}% Upright quotes in Pygmentized code
+    }
+    \usepackage{upquote} % Upright quotes for verbatim code
+    \usepackage{eurosym} % defines \euro
+    \usepackage[mathletters]{ucs} % Extended unicode (utf-8) support
+    \usepackage[utf8x]{inputenc} % Allow utf-8 characters in the tex document
+    \usepackage{fancyvrb} % verbatim replacement that allows latex
+    \usepackage{grffile} % extends the file name processing of package graphics 
+                         % to support a larger range 
+    % The hyperref package gives us a pdf with properly built
+    % internal navigation ('pdf bookmarks' for the table of contents,
+    % internal cross-reference links, web links for URLs, etc.)
+    \usepackage{hyperref}
+    \usepackage{longtable} % longtable support required by pandoc >1.10
+    \usepackage{booktabs}  % table support for pandoc > 1.12.2
+    \usepackage[inline]{enumitem} % IRkernel/repr support (it uses the enumerate* environment)
+    \usepackage[normalem]{ulem} % ulem is needed to support strikethroughs (\sout)
+                                % normalem makes italics be italics, not underlines
+    
+
+    
+    
+    % Colors for the hyperref package
+    \definecolor{urlcolor}{rgb}{0,.145,.698}
+    \definecolor{linkcolor}{rgb}{.71,0.21,0.01}
+    \definecolor{citecolor}{rgb}{.12,.54,.11}
+
+    % ANSI colors
+    \definecolor{ansi-black}{HTML}{3E424D}
+    \definecolor{ansi-black-intense}{HTML}{282C36}
+    \definecolor{ansi-red}{HTML}{E75C58}
+    \definecolor{ansi-red-intense}{HTML}{B22B31}
+    \definecolor{ansi-green}{HTML}{00A250}
+    \definecolor{ansi-green-intense}{HTML}{007427}
+    \definecolor{ansi-yellow}{HTML}{DDB62B}
+    \definecolor{ansi-yellow-intense}{HTML}{B27D12}
+    \definecolor{ansi-blue}{HTML}{208FFB}
+    \definecolor{ansi-blue-intense}{HTML}{0065CA}
+    \definecolor{ansi-magenta}{HTML}{D160C4}
+    \definecolor{ansi-magenta-intense}{HTML}{A03196}
+    \definecolor{ansi-cyan}{HTML}{60C6C8}
+    \definecolor{ansi-cyan-intense}{HTML}{258F8F}
+    \definecolor{ansi-white}{HTML}{C5C1B4}
+    \definecolor{ansi-white-intense}{HTML}{A1A6B2}
+
+    % commands and environments needed by pandoc snippets
+    % extracted from the output of `pandoc -s`
+    \providecommand{\tightlist}{%
+      \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+    \DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+    % Add ',fontsize=\small' for more characters per line
+    \newenvironment{Shaded}{}{}
+    \newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.56,0.13,0.00}{{#1}}}
+    \newcommand{\DecValTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\FloatTok}[1]{\textcolor[rgb]{0.25,0.63,0.44}{{#1}}}
+    \newcommand{\CharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\StringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\CommentTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textit{{#1}}}}
+    \newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{{#1}}}
+    \newcommand{\AlertTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.02,0.16,0.49}{{#1}}}
+    \newcommand{\RegionMarkerTok}[1]{{#1}}
+    \newcommand{\ErrorTok}[1]{\textcolor[rgb]{1.00,0.00,0.00}{\textbf{{#1}}}}
+    \newcommand{\NormalTok}[1]{{#1}}
+    
+    % Additional commands for more recent versions of Pandoc
+    \newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.53,0.00,0.00}{{#1}}}
+    \newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.25,0.44,0.63}{{#1}}}
+    \newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.73,0.40,0.53}{{#1}}}
+    \newcommand{\ImportTok}[1]{{#1}}
+    \newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.73,0.13,0.13}{\textit{{#1}}}}
+    \newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\VariableTok}[1]{\textcolor[rgb]{0.10,0.09,0.49}{{#1}}}
+    \newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.44,0.13}{\textbf{{#1}}}}
+    \newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.40,0.40,0.40}{{#1}}}
+    \newcommand{\BuiltInTok}[1]{{#1}}
+    \newcommand{\ExtensionTok}[1]{{#1}}
+    \newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.74,0.48,0.00}{{#1}}}
+    \newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.49,0.56,0.16}{{#1}}}
+    \newcommand{\InformationTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    \newcommand{\WarningTok}[1]{\textcolor[rgb]{0.38,0.63,0.69}{\textbf{\textit{{#1}}}}}
+    
+    
+    % Define a nice break command that doesn't care if a line doesn't already
+    % exist.
+    \def\br{\hspace*{\fill} \\* }
+    % Math Jax compatability definitions
+    \def\gt{>}
+    \def\lt{<}
+    % Document parameters
+    \title{Assignment3}
+    
+    
+    
+
+    % Pygments definitions
+    
+\makeatletter
+\def\PY@reset{\let\PY@it=\relax \let\PY@bf=\relax%
+    \let\PY@ul=\relax \let\PY@tc=\relax%
+    \let\PY@bc=\relax \let\PY@ff=\relax}
+\def\PY@tok#1{\csname PY@tok@#1\endcsname}
+\def\PY@toks#1+{\ifx\relax#1\empty\else%
+    \PY@tok{#1}\expandafter\PY@toks\fi}
+\def\PY@do#1{\PY@bc{\PY@tc{\PY@ul{%
+    \PY@it{\PY@bf{\PY@ff{#1}}}}}}}
+\def\PY#1#2{\PY@reset\PY@toks#1+\relax+\PY@do{#2}}
+
+\expandafter\def\csname PY@tok@kt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.69,0.00,0.25}{##1}}}
+\expandafter\def\csname PY@tok@na\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.49,0.56,0.16}{##1}}}
+\expandafter\def\csname PY@tok@s2\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@w\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.73,0.73}{##1}}}
+\expandafter\def\csname PY@tok@gh\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@k\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@vi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sa\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@il\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@nc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@cpf\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ch\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@sc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@ss\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@vc\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@ni\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.60,0.60,0.60}{##1}}}
+\expandafter\def\csname PY@tok@s1\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@kp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@sb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@vg\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sr\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@vm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@sd\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@nl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@fm\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@mf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@c\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@no\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kr\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gp\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@ge\endcsname{\let\PY@it=\textit}
+\expandafter\def\csname PY@tok@gs\endcsname{\let\PY@bf=\textbf}
+\expandafter\def\csname PY@tok@s\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@bp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@ow\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@o\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mo\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@m\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@mb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@sx\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nb\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@sh\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@cm\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@go\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.53,0.53,0.53}{##1}}}
+\expandafter\def\csname PY@tok@se\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.13}{##1}}}
+\expandafter\def\csname PY@tok@gi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.63,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gr\endcsname{\def\PY@tc##1{\textcolor[rgb]{1.00,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.67,0.13,1.00}{##1}}}
+\expandafter\def\csname PY@tok@c1\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@err\endcsname{\def\PY@bc##1{\setlength{\fboxsep}{0pt}\fcolorbox[rgb]{1.00,0.00,0.00}{1,1,1}{\strut ##1}}}
+\expandafter\def\csname PY@tok@si\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.73,0.40,0.53}{##1}}}
+\expandafter\def\csname PY@tok@ne\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.82,0.25,0.23}{##1}}}
+\expandafter\def\csname PY@tok@cs\endcsname{\let\PY@it=\textit\def\PY@tc##1{\textcolor[rgb]{0.25,0.50,0.50}{##1}}}
+\expandafter\def\csname PY@tok@dl\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.73,0.13,0.13}{##1}}}
+\expandafter\def\csname PY@tok@gd\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.63,0.00,0.00}{##1}}}
+\expandafter\def\csname PY@tok@mi\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.40,0.40,0.40}{##1}}}
+\expandafter\def\csname PY@tok@nf\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@kc\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@gt\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.00,0.27,0.87}{##1}}}
+\expandafter\def\csname PY@tok@nv\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.10,0.09,0.49}{##1}}}
+\expandafter\def\csname PY@tok@nn\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.00,1.00}{##1}}}
+\expandafter\def\csname PY@tok@gu\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.50,0.00,0.50}{##1}}}
+\expandafter\def\csname PY@tok@cp\endcsname{\def\PY@tc##1{\textcolor[rgb]{0.74,0.48,0.00}{##1}}}
+\expandafter\def\csname PY@tok@nt\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+\expandafter\def\csname PY@tok@kd\endcsname{\let\PY@bf=\textbf\def\PY@tc##1{\textcolor[rgb]{0.00,0.50,0.00}{##1}}}
+
+\def\PYZbs{\char`\\}
+\def\PYZus{\char`\_}
+\def\PYZob{\char`\{}
+\def\PYZcb{\char`\}}
+\def\PYZca{\char`\^}
+\def\PYZam{\char`\&}
+\def\PYZlt{\char`\<}
+\def\PYZgt{\char`\>}
+\def\PYZsh{\char`\#}
+\def\PYZpc{\char`\%}
+\def\PYZdl{\char`\$}
+\def\PYZhy{\char`\-}
+\def\PYZsq{\char`\'}
+\def\PYZdq{\char`\"}
+\def\PYZti{\char`\~}
+% for compatibility with earlier versions
+\def\PYZat{@}
+\def\PYZlb{[}
+\def\PYZrb{]}
+\makeatother
+
+
+    % Exact colors from NB
+    \definecolor{incolor}{rgb}{0.0, 0.0, 0.5}
+    \definecolor{outcolor}{rgb}{0.545, 0.0, 0.0}
+
+
+
+    
+    % Prevent overflowing lines due to hard-to-break entities
+    \sloppy 
+    % Setup hyperref package
+    \hypersetup{
+      breaklinks=true,  % so long urls are correctly broken across lines
+      colorlinks=true,
+      urlcolor=urlcolor,
+      linkcolor=linkcolor,
+      citecolor=citecolor,
+      }
+    % Slightly bigger margins than the latex defaults
+    
+    \geometry{verbose,tmargin=1in,bmargin=1in,lmargin=1in,rmargin=1in}
+    
+    
+
+    \begin{document}
+    
+    
+    \maketitle
+    
+    
+
+    
+    \section{Assignment 3: Image Classification using
+CNNs}\label{assignment-3-image-classification-using-cnns}
+
+    In this assignment you will learn about 1. The fundamental computations
+in neural networks for vision, including backpropagation 2. The basics
+of fitting a model for generalization 3. Nearest neighbor classifiers
+
+\textbf{Note:} When you first load this colab webpage, it will be in
+read-only viewing mode. To edit and run code, you can either (a)
+download the Jupyter notebook ("File" -\textgreater{} "Download .ipynb")
+to run on your local computer or (b) copy to your Google Drive ("File"
+-\textgreater{} "Save a copy in Drive...") to work in the browser and
+run on a Google Cloud GPU. If you run locally, you will need to install
+Tensorflow and it is recommended that you use a GPU for problem 3.2. If
+you do not want to use Colab and do not have a local GPU, please let us
+know.
+
+    \section{3.0 Nearest neighbor classification (20
+points)}\label{nearest-neighbor-classification-20-points}
+
+\subsection{3.0.1 (20 points)}\label{points}
+
+Given the following training set of labeled two-dimensional points for
+binary classification, draw a Voronoi diagram of the output of a
+1-nearest neighbor classifier. Feel free to render the diagram using
+Python below (do not use scikit-learn or any machine learning libraries
+to do this) or submit a PDF along with your assignment.
+
+\begin{quote}
+\begin{verbatim}
+Point (x,y)  | Label
+-------------|-------
+(1,3)        |   +
+(-4,-2)      |   +
+(-3,-1.5)    |   -
+(3,3)        |   -
+(0,-2)       |   +
+(-2,0)       |   +
+(-2,4)       |   -
+\end{verbatim}
+\end{quote}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{c+c1}{\PYZsh{}Functions used to find the N\PYZhy{}Nearest neighbors for assignment}
+        \PY{c+c1}{\PYZsh{}The results for the Nearest Neighbor classification were created in Photoshop, }
+        \PY{c+c1}{\PYZsh{}and can be found at the NN\PYZus{}Classification\PYZbs{}1NN\PYZhy{}Voronoi.jpg}
+        
+        
+        \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+        \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+        
+        \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{l+s+sd}{Function to calculate distance between two points}
+        
+        \PY{l+s+sd}{inputs: x1, y1 \PYZhy{} datapoint 1}
+        \PY{l+s+sd}{        x2, y2 \PYZhy{} datapoint 2}
+        \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{k}{def} \PY{n+nf}{distance}\PY{p}{(}\PY{n}{x1}\PY{p}{,} \PY{n}{x2}\PY{p}{,} \PY{n}{y1}\PY{p}{,} \PY{n}{y2}\PY{p}{)}\PY{p}{:}
+            \PY{n}{x\PYZus{}diff} \PY{o}{=} \PY{n}{x2} \PY{o}{\PYZhy{}} \PY{n}{x1}
+            \PY{n}{y\PYZus{}diff} \PY{o}{=} \PY{n}{y2} \PY{o}{\PYZhy{}} \PY{n}{y1} 
+            \PY{k}{return} \PY{n}{np}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{p}{(}\PY{n}{x\PYZus{}diff}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{o}{+}\PY{p}{(}\PY{n}{y\PYZus{}diff}\PY{o}{*}\PY{o}{*}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{)}  
+        
+        \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{l+s+sd}{Function to find the nearest neighbor}
+        
+        \PY{l+s+sd}{inputs: x\PYZus{}idx,y\PYZus{}idx \PYZhy{} the current datapoint to find the nearest neighbors for}
+        \PY{l+s+sd}{        datapoints \PYZhy{} the classified datapoints to consider as neighbors}
+        \PY{l+s+sd}{        k \PYZhy{} the count of nearest neighbors to consider}
+        \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{k}{def} \PY{n+nf}{nearest\PYZus{}neighbors}\PY{p}{(}\PY{n}{x\PYZus{}idx}\PY{p}{,} \PY{n}{y\PYZus{}idx}\PY{p}{,} \PY{n}{datapoints}\PY{p}{,} \PY{n}{k}\PY{p}{)}\PY{p}{:}
+            \PY{n}{all\PYZus{}dist} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+            \PY{n}{label} \PY{o}{=} \PY{l+m+mi}{0}
+            
+            \PY{c+c1}{\PYZsh{}Go through each datapoint}
+            \PY{k}{for} \PY{n}{point} \PY{o+ow}{in} \PY{n}{datapoints}\PY{p}{:}
+                
+                \PY{c+c1}{\PYZsh{}Calculate the distance and append to a list}
+                \PY{n}{curr\PYZus{}distance} \PY{o}{=} \PY{n}{distance}\PY{p}{(}\PY{n}{x\PYZus{}idx}\PY{p}{,} \PY{n}{point}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{y\PYZus{}idx}\PY{p}{,} \PY{n}{point}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}
+                \PY{n}{all\PYZus{}dist}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{p}{(}\PY{n}{curr\PYZus{}distance}\PY{p}{,} \PY{n}{point}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{}sort the list in order of closeness, and limit to the k\PYZhy{}nearest neighbors}
+            \PY{n}{sorted\PYZus{}dist} \PY{o}{=} \PY{n+nb}{sorted}\PY{p}{(}\PY{n}{all\PYZus{}dist}\PY{p}{,} \PY{n}{key}\PY{o}{=}\PY{k}{lambda} \PY{n}{x}\PY{p}{:}\PY{n}{x}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+            \PY{n}{k\PYZus{}nn} \PY{o}{=} \PY{n}{sorted\PYZus{}dist}\PY{p}{[}\PY{p}{:}\PY{n}{k}\PY{p}{]}
+            
+            \PY{c+c1}{\PYZsh{}Go through each considered neighbor and impact the value depending on }
+            \PY{c+c1}{\PYZsh{}whether the neighbor was a \PYZdq{}+\PYZdq{} or a \PYZdq{}\PYZhy{}\PYZdq{}, adding and subtracting respectively}
+            \PY{k}{for} \PY{n}{neighbor} \PY{o+ow}{in} \PY{n}{k\PYZus{}nn}\PY{p}{:}
+                \PY{k}{if}\PY{p}{(}\PY{n}{neighbor}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{==} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{+}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{:}
+                    \PY{n}{label} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+                \PY{k}{else}\PY{p}{:}
+                    \PY{n}{label} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{l+m+mi}{1}
+            
+            \PY{c+c1}{\PYZsh{}Indicate label at the point, handling edge case of a tie by looking at the K\PYZhy{}1 nearest neighbors}
+            \PY{k}{if}\PY{p}{(}\PY{n}{label} \PY{o}{\PYZgt{}} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+                \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{+}\PY{l+s+s2}{\PYZdq{}}
+            \PY{k}{elif}\PY{p}{(}\PY{n}{label} \PY{o}{\PYZlt{}} \PY{l+m+mi}{0}\PY{p}{)}\PY{p}{:}
+                \PY{k}{return} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}
+            \PY{k}{else}\PY{p}{:}
+                \PY{k}{return} \PY{n}{nearest\PYZus{}neighbors}\PY{p}{(}\PY{n}{x\PYZus{}idx}\PY{p}{,} \PY{n}{y\PYZus{}idx}\PY{p}{,} \PY{n}{datapoints}\PY{p}{,} \PY{n}{k}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}
+        
+        \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{l+s+sd}{Function to print the indices at which the class changes, between positive and negative}
+        
+        \PY{l+s+sd}{inputs: datapoints \PYZhy{} the datapoints with their classes specified}
+        \PY{l+s+sd}{        nn\PYZus{}cnt \PYZhy{} the number of datapoints to consider when calculated class}
+        \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{k}{def} \PY{n+nf}{print\PYZus{}switch\PYZus{}indices}\PY{p}{(}\PY{n}{datapoints}\PY{p}{,} \PY{n}{nn\PYZus{}cnt}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{}initialize the boundaries}
+            \PY{c+c1}{\PYZsh{}Start with 50 and times by .1 to be able to iterate through pixel per tenth}
+            \PY{n}{H} \PY{o}{=} \PY{n}{W} \PY{o}{=} \PY{l+m+mi}{50}
+            \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{H}\PY{p}{,}\PY{n}{H}\PY{p}{)}\PY{p}{:}
+                \PY{n}{curr\PYZus{}class} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}       
+                \PY{n}{i} \PY{o}{*}\PY{o}{=} \PY{o}{.}\PY{l+m+mi}{1}
+                \PY{n}{output} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZdq{}}
+                \PY{k}{for} \PY{n}{j} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{o}{\PYZhy{}}\PY{n}{W}\PY{p}{,}\PY{n}{W}\PY{p}{)}\PY{p}{:}
+                    \PY{n}{j} \PY{o}{*}\PY{o}{=} \PY{o}{.}\PY{l+m+mi}{1}
+        
+                    \PY{n}{label} \PY{o}{=} \PY{n}{nearest\PYZus{}neighbors}\PY{p}{(}\PY{n}{j}\PY{p}{,} \PY{n}{i}\PY{p}{,} \PY{n}{datapoints}\PY{p}{,} \PY{n}{nn\PYZus{}cnt}\PY{p}{)}
+                    \PY{k}{if}\PY{p}{(}\PY{n}{label} \PY{o}{!=} \PY{n}{curr\PYZus{}class}\PY{p}{)}\PY{p}{:}
+                        \PY{n}{output} \PY{o}{+}\PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{j}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{,}\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{i}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ switched to }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n}{label}
+                        \PY{n}{curr\PYZus{}class} \PY{o}{=} \PY{n}{label}
+                \PY{n+nb}{print}\PY{p}{(}\PY{n}{output} \PY{p}{,}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        
+        \PY{c+c1}{\PYZsh{}Initialize the datapoints}
+        \PY{n}{datapoints} \PY{o}{=} \PY{p}{[}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{+}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{4}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{+}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{3}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mf}{1.5}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{l+m+mi}{3}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{+}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{+}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{,} \PY{p}{(}\PY{o}{\PYZhy{}}\PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{4}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{\PYZhy{}}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}\PY{p}{]}
+        \PY{c+c1}{\PYZsh{}Find nearest neighbors}
+        \PY{n}{print\PYZus{}switch\PYZus{}indices}\PY{p}{(}\PY{n}{datapoints}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+\end{Verbatim}
+
+
+    \subsection{3.0.2 (5 points, extra)}\label{points-extra}
+
+Render for 3-NN
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{c+c1}{\PYZsh{}The results for the Nearest Neighbor classification were created in Photoshop, }
+        \PY{c+c1}{\PYZsh{}and can be found at the NN\PYZus{}Classification\PYZbs{}3NN\PYZhy{}Voronoi.jpg}
+        
+        \PY{c+c1}{\PYZsh{}Find nearest neighbors}
+        \PY{n}{print\PYZus{}switch\PYZus{}indices}\PY{p}{(}\PY{n}{datapoints}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}
+\end{Verbatim}
+
+
+    \section{3.1 Neural network operations (40
+points)}\label{neural-network-operations-40-points}
+
+    In this section we provide a working example of a convolutional neural
+network written using basic numpy operations. Each neural network
+operation is represented by a Python class with methods \emph{forward()}
+and \emph{backward()}, which compute activations and gradients,
+respectively. Your task is to complete certain methods that are left
+blank.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  2D Convolution \textgreater{} * Forward \textgreater{} *
+  \textbf{Backward (10 points)}
+\item
+  ReLU \textgreater{} * \textbf{Forward (5 points)} \textgreater{} *
+  Backward
+\item
+  Average pooling \textgreater{} * Forward \textgreater{} *
+  \textbf{Backward (5 points)}
+\item
+  Softmax cross-entropy \textgreater{} * \textbf{Forward (10 points)}
+  \textgreater{} * Backward
+\end{enumerate}
+
+When you complete an operation, you can check your work by executing its
+cell. We compare the outputs of your method to that of Tensorflow.
+
+Finally, when you have all of the operations completed, you can run a
+small network for a few iterations of stochastic gradient descent and
+plot the loss.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{c+c1}{\PYZsh{}@title (Hidden utility code: RUN ME FIRST) \PYZob{} display\PYZhy{}mode: \PYZdq{}form\PYZdq{} \PYZcb{}}
+        \PY{k+kn}{import} \PY{n+nn}{tensorflow} \PY{k}{as} \PY{n+nn}{tf}
+        \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+        
+        \PY{k}{class} \PY{n+nc}{Variable}\PY{p}{:}
+          \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Placeholder for labels and input images\PYZdq{}\PYZdq{}\PYZdq{}}
+          \PY{n}{value} \PY{o}{=} \PY{l+m+mi}{0}
+        
+        \PY{k}{def} \PY{n+nf}{cmp\PYZus{}ops}\PY{p}{(}\PY{n}{your\PYZus{}op}\PY{p}{,} \PY{n}{tf\PYZus{}op}\PY{p}{,} \PY{n}{tf\PYZus{}inputs}\PY{p}{,} \PY{n}{tf\PYZus{}weights}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+          \PY{n}{your\PYZus{}op}\PY{o}{.}\PY{n}{forward}\PY{p}{(}\PY{p}{)}
+          \PY{n}{your\PYZus{}op\PYZus{}f\PYZus{}out} \PY{o}{=} \PY{n}{your\PYZus{}op}\PY{o}{.}\PY{n}{value}
+        
+          \PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{as\PYZus{}default}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+            \PY{n}{tf\PYZus{}op\PYZus{}f\PYZus{}out} \PY{o}{=} \PY{n}{tf\PYZus{}op}\PY{o}{.}\PY{n}{eval}\PY{p}{(}\PY{p}{)}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{c+c1}{\PYZsh{} Remove the batch dimension}
+        
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Forward pass:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+          \PY{n}{cmp\PYZus{}tensors}\PY{p}{(}\PY{n}{your\PYZus{}op\PYZus{}f\PYZus{}out}\PY{p}{,} \PY{n}{tf\PYZus{}op\PYZus{}f\PYZus{}out}\PY{p}{,} \PY{n}{verbose}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+        
+          \PY{n}{your\PYZus{}op}\PY{o}{.}\PY{n}{inputs}\PY{o}{.}\PY{n}{dloss\PYZus{}dvalue} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n}{your\PYZus{}op}\PY{o}{.}\PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+          \PY{n}{your\PYZus{}op}\PY{o}{.}\PY{n}{dloss\PYZus{}dvalue} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{ones}\PY{p}{(}\PY{n}{your\PYZus{}op}\PY{o}{.}\PY{n}{value}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+          \PY{n}{your\PYZus{}op}\PY{o}{.}\PY{n}{backward}\PY{p}{(}\PY{p}{)}
+          \PY{n}{your\PYZus{}op\PYZus{}g\PYZus{}inputs} \PY{o}{=} \PY{n}{your\PYZus{}op}\PY{o}{.}\PY{n}{inputs}\PY{o}{.}\PY{n}{dloss\PYZus{}dvalue}
+        
+          \PY{k}{if} \PY{n}{tf\PYZus{}weights} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None}\PY{p}{:}
+            \PY{n}{your\PYZus{}op\PYZus{}g\PYZus{}weights} \PY{o}{=} \PY{n}{your\PYZus{}op}\PY{o}{.}\PY{n}{dloss\PYZus{}dweights}
+            \PY{n}{g\PYZus{}inputs}\PY{p}{,} \PY{n}{g\PYZus{}weights} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{gradients}\PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{reduce\PYZus{}sum}\PY{p}{(}\PY{n}{tf\PYZus{}op}\PY{p}{)}\PY{p}{,} \PY{p}{[}\PY{n}{tf\PYZus{}inputs}\PY{p}{,} \PY{n}{tf\PYZus{}weights}\PY{p}{]}\PY{p}{)}
+            
+            \PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+              \PY{n}{tf\PYZus{}g\PYZus{}inputs\PYZus{}out}\PY{p}{,} \PY{n}{tf\PYZus{}g\PYZus{}weights\PYZus{}out} \PY{o}{=} \PY{n}{sess}\PY{o}{.}\PY{n}{run}\PY{p}{(}\PY{p}{[}\PY{n}{g\PYZus{}inputs}\PY{p}{,} \PY{n}{g\PYZus{}weights}\PY{p}{]}\PY{p}{)}
+              \PY{n}{tf\PYZus{}g\PYZus{}weights\PYZus{}out} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{n}{tf\PYZus{}g\PYZus{}weights\PYZus{}out}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}
+            
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Gradient wrt inputs:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{n}{cmp\PYZus{}tensors}\PY{p}{(}\PY{n}{your\PYZus{}op\PYZus{}g\PYZus{}inputs}\PY{p}{,} \PY{n}{tf\PYZus{}g\PYZus{}inputs\PYZus{}out}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Gradient wrt weights:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{n}{cmp\PYZus{}tensors}\PY{p}{(}\PY{n}{your\PYZus{}op\PYZus{}g\PYZus{}weights}\PY{p}{,} \PY{n}{tf\PYZus{}g\PYZus{}weights\PYZus{}out}\PY{p}{)}
+            
+          \PY{k}{else}\PY{p}{:}
+            \PY{n}{g\PYZus{}inputs} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{gradients}\PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{reduce\PYZus{}sum}\PY{p}{(}\PY{n}{tf\PYZus{}op}\PY{p}{)}\PY{p}{,} \PY{p}{[}\PY{n}{tf\PYZus{}inputs}\PY{p}{]}\PY{p}{)}
+        
+            \PY{k}{with} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)} \PY{k}{as} \PY{n}{sess}\PY{p}{:}
+              \PY{n}{tf\PYZus{}g\PYZus{}inputs\PYZus{}out} \PY{o}{=} \PY{n}{sess}\PY{o}{.}\PY{n}{run}\PY{p}{(}\PY{n}{g\PYZus{}inputs}\PY{p}{)}
+        
+            \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Gradient wrt inputs:}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+            \PY{n}{cmp\PYZus{}tensors}\PY{p}{(}\PY{n}{your\PYZus{}op\PYZus{}g\PYZus{}inputs}\PY{p}{,} \PY{n}{tf\PYZus{}g\PYZus{}inputs\PYZus{}out}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{,} \PY{n}{verbose}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+        
+        \PY{k}{def} \PY{n+nf}{cmp\PYZus{}tensors}\PY{p}{(}\PY{n}{yours}\PY{p}{,} \PY{n}{tfs}\PY{p}{,} \PY{n}{verbose}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}\PY{p}{:}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{  Your Op shape: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{yours}\PY{o}{.}\PY{n}{shape}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{  TensorFlow Op shape: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{tfs}\PY{o}{.}\PY{n}{shape}\PY{p}{)}\PY{p}{)}
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{  Values equal: }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{allclose}\PY{p}{(}\PY{n}{tfs}\PY{p}{,} \PY{n}{yours}\PY{p}{,} \PY{n}{atol}\PY{o}{=}\PY{l+m+mf}{1e\PYZhy{}6}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+          \PY{k}{if} \PY{n}{verbose}\PY{p}{:}
+            \PY{n+nb}{print}\PY{p}{(}\PY{n}{tfs}\PY{p}{)}
+            \PY{n+nb}{print}\PY{p}{(}\PY{n}{yours}\PY{p}{)}
+            
+        \PY{n}{inputs} \PY{o}{=} \PY{n}{Variable}\PY{p}{(}\PY{p}{)}
+        \PY{n}{inputs}\PY{o}{.}\PY{n}{value} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{normal}\PY{p}{(}\PY{n}{size}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)} \PY{c+c1}{\PYZsh{} Input image is 10x10x3}
+        \PY{n}{tf\PYZus{}inputs} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{constant}\PY{p}{(}\PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{p}{[}\PY{n}{np}\PY{o}{.}\PY{n}{newaxis}\PY{p}{,} \PY{o}{.}\PY{o}{.}\PY{o}{.}\PY{p}{]}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n}{tf}\PY{o}{.}\PY{n}{float32}\PY{p}{)}
+\end{Verbatim}
+
+
+    \subsection{3.1.1 2D Convolution (10 pts)}\label{d-convolution-10-pts}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+        
+        \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}rows x cols x filters\PYZdq{}\PYZdq{}\PYZdq{}}
+        
+        \PY{k}{class} \PY{n+nc}{OpConv2D}\PY{p}{:}
+          \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Two\PYZhy{}dimensional convolutional layer\PYZdq{}\PYZdq{}\PYZdq{}}
+            
+          \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{filters}\PY{p}{,} \PY{n}{kernel\PYZus{}size}\PY{p}{,} \PY{n}{inputs}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} Shape of the input feature map}
+            \PY{n}{input\PYZus{}height} \PY{o}{=} \PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+            \PY{n}{input\PYZus{}width} \PY{o}{=} \PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+            \PY{n}{input\PYZus{}filters} \PY{o}{=} \PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}
+            
+            \PY{c+c1}{\PYZsh{} Shape of this layer\PYZsq{}s feature map}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{height} \PY{o}{=} \PY{n}{input\PYZus{}height} \PY{o}{\PYZhy{}} \PY{n}{kernel\PYZus{}size} \PY{o}{+} \PY{l+m+mi}{1}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{width} \PY{o}{=} \PY{n}{input\PYZus{}width} \PY{o}{\PYZhy{}} \PY{n}{kernel\PYZus{}size} \PY{o}{+} \PY{l+m+mi}{1}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{filters} \PY{o}{=} \PY{n}{filters}
+            
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inputs} \PY{o}{=} \PY{n}{inputs}
+            \PY{c+c1}{\PYZsh{}Attempted extra credit function implementation here}
+            \PY{c+c1}{\PYZsh{}self.inputs = self.pad\PYZus{}inputs(inputs)}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{kernel\PYZus{}size} \PY{o}{=} \PY{n}{kernel\PYZus{}size}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{weights} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{normal}\PY{p}{(}\PY{n}{size}\PY{o}{=}\PY{p}{(}\PY{n}{filters}\PY{p}{,} \PY{n}{kernel\PYZus{}size}\PY{p}{,} \PY{n}{kernel\PYZus{}size}\PY{p}{,} \PY{n}{input\PYZus{}filters}\PY{p}{)}\PY{p}{,} \PY{n}{scale}\PY{o}{=}\PY{l+m+mf}{0.1}\PY{p}{)}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{reset\PYZus{}values}\PY{p}{(}\PY{p}{)}
+            
+          \PY{k}{def} \PY{n+nf}{reset\PYZus{}values}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{value} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{height}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{width}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{filters}\PY{p}{)}\PY{p}{)}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dloss\PYZus{}dvalue} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{value}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dloss\PYZus{}dweights} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{weights}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+            
+          \PY{k}{def} \PY{n+nf}{forward}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} Reset value and gradient at start of forward pass}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{reset\PYZus{}values}\PY{p}{(}\PY{p}{)}
+            
+            \PY{k}{for} \PY{n}{y} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{height}\PY{p}{)}\PY{p}{:}
+              \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{width}\PY{p}{)}\PY{p}{:}
+                \PY{k}{for} \PY{n}{f} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{filters}\PY{p}{)}\PY{p}{:}
+                  \PY{n}{z} \PY{o}{=} \PY{l+m+mf}{0.0}
+                  
+                  \PY{k}{for} \PY{n}{ky} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{kernel\PYZus{}size}\PY{p}{)}\PY{p}{:}
+                    \PY{k}{for} \PY{n}{kx} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{kernel\PYZus{}size}\PY{p}{)}\PY{p}{:}
+                      \PY{k}{for} \PY{n}{kf} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{weights}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+                        \PY{n}{z} \PY{o}{+}\PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{p}{[}\PY{n}{y}\PY{o}{+}\PY{n}{ky}\PY{p}{,} \PY{n}{x}\PY{o}{+}\PY{n}{kx}\PY{p}{,} \PY{n}{kf}\PY{p}{]} \PY{o}{*} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{weights}\PY{p}{[}\PY{n}{f}\PY{p}{,} \PY{n}{ky}\PY{p}{,} \PY{n}{kx}\PY{p}{,} \PY{n}{kf}\PY{p}{]}
+                        
+                  \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{value}\PY{p}{[}\PY{n}{y}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{f}\PY{p}{]} \PY{o}{=} \PY{n}{z}
+                  
+          \PY{k}{def} \PY{n+nf}{backward}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} Complete this method, which sets:}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} 1. Partial derivative of the loss with respect to the values of the inputs}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} self.inputs.dloss\PYZus{}dvalue, which is a `height x width x input\PYZus{}filters` tensor}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} 2. Partial derivative of the loss with respect to the weights}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} self.dloss\PYZus{}dweights, which is a `filters x kernel\PYZus{}size x kernel\PYZus{}size x input\PYZus{}filters` tensor}
+            \PY{c+c1}{\PYZsh{}\PYZsh{}}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} This will utilize tensors:}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} 1. The partial with respect to the value of this layer}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} self.dloss\PYZus{}dvalue, a `height x width x filter` tensor}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} 2. The weights of this layer}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} self.weights, a `filters x kernel\PYZus{}size x kernel\PYZus{}size x input\PYZus{}filters` tensor}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} 3. The value of the input layer}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} self.inputs.value, a `height x width x input\PYZus{}filters` tensor}
+            \PY{k}{pass}
+        
+            \PY{k}{for} \PY{n}{y} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{height}\PY{p}{)}\PY{p}{:}
+              \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{width}\PY{p}{)}\PY{p}{:}
+                \PY{k}{for} \PY{n}{f} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{filters}\PY{p}{)}\PY{p}{:} 
+                    
+                  \PY{k}{for} \PY{n}{ky} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{kernel\PYZus{}size}\PY{p}{)}\PY{p}{:}
+                    \PY{k}{for} \PY{n}{kx} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{kernel\PYZus{}size}\PY{p}{)}\PY{p}{:}
+                      \PY{k}{for} \PY{n}{kf} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{weights}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+                        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inputs}\PY{o}{.}\PY{n}{dloss\PYZus{}dvalue}\PY{p}{[}\PY{n}{y}\PY{o}{+}\PY{n}{ky}\PY{p}{,} \PY{n}{x}\PY{o}{+}\PY{n}{kx}\PY{p}{,} \PY{n}{kf}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{weights}\PY{p}{[}\PY{n}{f}\PY{p}{,} \PY{n}{ky}\PY{p}{,} \PY{n}{kx}\PY{p}{,} \PY{n}{kf}\PY{p}{]} \PY{o}{*} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dloss\PYZus{}dvalue}\PY{p}{[}\PY{n}{y}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{f}\PY{p}{]}
+                        \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dloss\PYZus{}dweights}\PY{p}{[}\PY{n}{f}\PY{p}{,} \PY{n}{ky}\PY{p}{,} \PY{n}{kx}\PY{p}{,} \PY{n}{kf}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{p}{[}\PY{n}{y}\PY{o}{+}\PY{n}{ky}\PY{p}{,} \PY{n}{x}\PY{o}{+}\PY{n}{kx}\PY{p}{,} \PY{n}{kf}\PY{p}{]} \PY{o}{*} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dloss\PYZus{}dvalue}\PY{p}{[}\PY{n}{y}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{f}\PY{p}{]}
+        
+            \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{l+s+sd}{    Attempted function to pad the input image with 0s for extra credit}
+        \PY{l+s+sd}{    Intention was to replace line in \PYZus{}\PYZus{}init\PYZus{}\PYZus{} \PYZdq{}self.inputs = inputs\PYZdq{}}
+        \PY{l+s+sd}{    with \PYZdq{}self.inputs = self.pad\PYZus{}inputs(inputs)\PYZdq{} }
+        \PY{l+s+sd}{    However, when in use, result turned false so not used  }
+        
+        \PY{l+s+sd}{    inputs: inputs \PYZhy{} input shape to be padded with 0s}
+        \PY{l+s+sd}{            }
+        \PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}                
+          \PY{k}{def} \PY{n+nf}{pad\PYZus{}inputs}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{inputs}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{}Add half kernel size to both ends of the image}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{half\PYZus{}k\PYZus{}size} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{p}{(}\PY{n}{kernel\PYZus{}size}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{)}
+        
+            \PY{c+c1}{\PYZsh{} Shape of the input feature map with paddinf}
+            \PY{n}{input\PYZus{}height} \PY{o}{=} \PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{+} \PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{half\PYZus{}k\PYZus{}size}\PY{p}{)}
+            \PY{n}{input\PYZus{}width} \PY{o}{=} \PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]} \PY{o}{+} \PY{p}{(}\PY{l+m+mi}{2}\PY{o}{*}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{half\PYZus{}k\PYZus{}size}\PY{p}{)}
+            
+            \PY{c+c1}{\PYZsh{}Initialize padded input to be returned}
+            \PY{n}{padded\PYZus{}inputs} \PY{o}{=} \PY{n}{Variable}\PY{p}{(}\PY{p}{)}
+            \PY{n}{padded\PYZus{}inputs}\PY{o}{.}\PY{n}{value} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{input\PYZus{}height}\PY{p}{,} \PY{n}{input\PYZus{}width}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{filters}\PY{p}{)}\PY{p}{)}
+            
+            \PY{k}{for} \PY{n}{y} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+              \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+                \PY{k}{for} \PY{n}{f} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+                  \PY{c+c1}{\PYZsh{}Copy each input into the padded output}
+                  \PY{n}{padded\PYZus{}inputs}\PY{o}{.}\PY{n}{value}\PY{p}{[}\PY{n}{x}\PY{o}{+}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{half\PYZus{}k\PYZus{}size}\PY{p}{]}\PY{p}{[}\PY{n}{y}\PY{o}{+}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{half\PYZus{}k\PYZus{}size}\PY{p}{]}\PY{p}{[}\PY{n}{f}\PY{p}{]} \PY{o}{=} \PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{p}{[}\PY{n}{y}\PY{p}{]}\PY{p}{[}\PY{n}{x}\PY{p}{]}\PY{p}{[}\PY{n}{f}\PY{p}{]}
+            
+            \PY{c+c1}{\PYZsh{} Update feature map}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{height} \PY{o}{=} \PY{n}{input\PYZus{}height} \PY{o}{\PYZhy{}} \PY{n}{kernel\PYZus{}size} \PY{o}{+} \PY{l+m+mi}{1}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{width} \PY{o}{=} \PY{n}{input\PYZus{}width} \PY{o}{\PYZhy{}} \PY{n}{kernel\PYZus{}size} \PY{o}{+} \PY{l+m+mi}{1}
+            
+            \PY{k}{return} \PY{n}{padded\PYZus{}inputs}
+                        
+          \PY{k}{def} \PY{n+nf}{gradient\PYZus{}step}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{step\PYZus{}size}\PY{p}{)}\PY{p}{:}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{weights} \PY{o}{\PYZhy{}}\PY{o}{=} \PY{n}{step\PYZus{}size} \PY{o}{*} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dloss\PYZus{}dweights}
+            
+        \PY{c+c1}{\PYZsh{} Double check that op matches tensorflow}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Testing Conv2D...}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{op1} \PY{o}{=} \PY{n}{OpConv2D}\PY{p}{(}\PY{l+m+mi}{4}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{n}{inputs}\PY{p}{)}
+        
+        \PY{n}{tf\PYZus{}weights} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{constant}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{transpose}\PY{p}{(}\PY{n}{op1}\PY{o}{.}\PY{n}{weights}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{3}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{,} \PY{n}{dtype}\PY{o}{=}\PY{n}{tf}\PY{o}{.}\PY{n}{float32}\PY{p}{)}
+        \PY{n}{tf\PYZus{}op1} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{conv2d}\PY{p}{(}\PY{n}{tf\PYZus{}inputs}\PY{p}{,}
+                              \PY{n}{tf\PYZus{}weights}\PY{p}{,}
+                              \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,}
+                              \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{VALID}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{cmp\PYZus{}ops}\PY{p}{(}\PY{n}{op1}\PY{p}{,} \PY{n}{tf\PYZus{}op1}\PY{p}{,} \PY{n}{tf\PYZus{}inputs}\PY{p}{,} \PY{n}{tf\PYZus{}weights}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Testing Conv2D{\ldots}
+Forward pass:
+  Your Op shape: (8, 8, 4)
+  TensorFlow Op shape: (8, 8, 4)
+  Values equal: True
+Gradient wrt inputs:
+  Your Op shape: (10, 10, 3)
+  TensorFlow Op shape: (10, 10, 3)
+  Values equal: True
+Gradient wrt weights:
+  Your Op shape: (4, 3, 3, 3)
+  TensorFlow Op shape: (4, 3, 3, 3)
+  Values equal: True
+
+    \end{Verbatim}
+
+    \subsection{3.1.2 ReLU (5 pts)}\label{relu-5-pts}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}3}]:} \PY{k}{class} \PY{n+nc}{OpRelu}\PY{p}{:}
+          \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Elementwise relu operator\PYZdq{}\PYZdq{}\PYZdq{}}
+            
+          \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{inputs}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} Shape of the input feature map}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{input\PYZus{}shape} \PY{o}{=} \PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{o}{.}\PY{n}{shape}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inputs} \PY{o}{=} \PY{n}{inputs}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{reset\PYZus{}values}\PY{p}{(}\PY{p}{)}
+            
+          \PY{k}{def} \PY{n+nf}{reset\PYZus{}values}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{value} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dloss\PYZus{}dvalue} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+            
+          \PY{k}{def} \PY{n+nf}{forward}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} Reset value and gradient at start of forward pass}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{reset\PYZus{}values}\PY{p}{(}\PY{p}{)}
+            \PY{n}{height}\PY{p}{,} \PY{n}{width}\PY{p}{,} \PY{n}{filters} \PY{o}{=} \PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{o}{.}\PY{n}{shape} 
+            \PY{k}{for} \PY{n}{y} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{input\PYZus{}shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+              \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{input\PYZus{}shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+                \PY{k}{for} \PY{n}{f} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{input\PYZus{}shape}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}\PY{p}{)}\PY{p}{:}
+                  \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{value}\PY{p}{[}\PY{n}{y}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{f}\PY{p}{]} \PY{o}{=} \PY{n+nb}{max}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{p}{[}\PY{n}{y}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{f}\PY{p}{]}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{)}
+        
+                    
+            \PY{c+c1}{\PYZsh{}\PYZsh{} Complete this code by setting self.value using self.inputs.value}
+            \PY{c+c1}{\PYZsh{}self.value = self.inputs.value \PYZgt{} 0 ? self.inputs.value : 0}
+                  
+          \PY{k}{def} \PY{n+nf}{backward}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inputs}\PY{o}{.}\PY{n}{dloss\PYZus{}dvalue} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dloss\PYZus{}dvalue} \PY{o}{*} \PY{n}{np}\PY{o}{.}\PY{n}{greater}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{value}\PY{p}{,} \PY{l+m+mf}{0.0}\PY{p}{)}
+                        
+          \PY{k}{def} \PY{n+nf}{gradient\PYZus{}step}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{step\PYZus{}size}\PY{p}{)}\PY{p}{:}
+            \PY{k}{pass}    
+          
+        \PY{c+c1}{\PYZsh{} Double check that each op matches tensorflow}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Testing Relu...}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{op2} \PY{o}{=} \PY{n}{OpRelu}\PY{p}{(}\PY{n}{inputs}\PY{p}{)}
+        \PY{n}{tf\PYZus{}op2} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{relu}\PY{p}{(}\PY{n}{tf\PYZus{}inputs}\PY{p}{)}
+        \PY{n}{cmp\PYZus{}ops}\PY{p}{(}\PY{n}{op2}\PY{p}{,} \PY{n}{tf\PYZus{}op2}\PY{p}{,} \PY{n}{tf\PYZus{}inputs}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Testing Relu{\ldots}
+Forward pass:
+  Your Op shape: (10, 10, 3)
+  TensorFlow Op shape: (10, 10, 3)
+  Values equal: True
+Gradient wrt inputs:
+  Your Op shape: (10, 10, 3)
+  TensorFlow Op shape: (1, 10, 10, 3)
+  Values equal: True
+
+    \end{Verbatim}
+
+    \subsection{3.1.3 Average Pooling (5 pts)}\label{average-pooling-5-pts}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}4}]:} \PY{k}{class} \PY{n+nc}{OpAvgPool}\PY{p}{:}
+          \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Average pooling layer. Non\PYZhy{}overlapping cells.\PYZdq{}\PYZdq{}\PYZdq{}}
+            
+          \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{cell\PYZus{}size}\PY{p}{,} \PY{n}{inputs}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} Shape of the input feature map}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{input\PYZus{}height} \PY{o}{=} \PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{input\PYZus{}width} \PY{o}{=} \PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{input\PYZus{}filters} \PY{o}{=} \PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}
+            
+            \PY{c+c1}{\PYZsh{} Shape of this layer\PYZsq{}s feature map}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{height} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{input\PYZus{}height} \PY{o}{+} \PY{n}{cell\PYZus{}size} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{/} \PY{n}{cell\PYZus{}size}\PY{p}{)}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{width} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{input\PYZus{}width} \PY{o}{+} \PY{n}{cell\PYZus{}size} \PY{o}{\PYZhy{}} \PY{l+m+mi}{1}\PY{p}{)} \PY{o}{/} \PY{n}{cell\PYZus{}size}\PY{p}{)}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{filters} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{input\PYZus{}filters}
+            
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inputs} \PY{o}{=} \PY{n}{inputs}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{cell\PYZus{}size} \PY{o}{=} \PY{n}{cell\PYZus{}size}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{reset\PYZus{}values}\PY{p}{(}\PY{p}{)}
+            
+          \PY{k}{def} \PY{n+nf}{reset\PYZus{}values}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{value} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{height}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{width}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{filters}\PY{p}{)}\PY{p}{)}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dloss\PYZus{}dvalue} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{value}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+            
+          \PY{k}{def} \PY{n+nf}{forward}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} Reset value and gradient at start of forward pass}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{reset\PYZus{}values}\PY{p}{(}\PY{p}{)}
+            
+            \PY{k}{for} \PY{n}{y} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{height}\PY{p}{)}\PY{p}{:}
+              \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{width}\PY{p}{)}\PY{p}{:}
+                \PY{k}{for} \PY{n}{f} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{filters}\PY{p}{)}\PY{p}{:}
+                  \PY{n}{z} \PY{o}{=} \PY{l+m+mf}{0.0}
+        
+                  \PY{k}{for} \PY{n}{ky} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{min}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{cell\PYZus{}size}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{input\PYZus{}height} \PY{o}{\PYZhy{}} \PY{n}{y}\PY{o}{*}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{cell\PYZus{}size}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                    \PY{k}{for} \PY{n}{kx} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb}{min}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{cell\PYZus{}size}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{input\PYZus{}width} \PY{o}{\PYZhy{}} \PY{n}{x}\PY{o}{*}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{cell\PYZus{}size}\PY{p}{)}\PY{p}{)}\PY{p}{:}
+                      \PY{n}{z} \PY{o}{+}\PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{p}{[}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{cell\PYZus{}size}\PY{o}{*}\PY{n}{y}\PY{o}{+}\PY{n}{ky}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{cell\PYZus{}size}\PY{o}{*}\PY{n}{x}\PY{o}{+}\PY{n}{kx}\PY{p}{,} \PY{n}{f}\PY{p}{]}
+                        
+                  \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{value}\PY{p}{[}\PY{n}{y}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{f}\PY{p}{]} \PY{o}{=} \PY{n}{z} \PY{o}{/} \PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{cell\PYZus{}size} \PY{o}{*} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{cell\PYZus{}size}\PY{p}{)}
+                  
+          \PY{k}{def} \PY{n+nf}{backward}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} Complete this method by setting the partial with repect to the values of the inputs}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} self.inputs.dloss\PYZus{}dvalue, an `input\PYZus{}height x input\PYZus{}width x filters` tensor}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} This will use the partial with respect to the value of this layer}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} self.dloss\PYZus{}dvalue, a `height x width x filters` tensor}
+            \PY{n}{d\PYZus{}xsq} \PY{o}{=} \PY{n+nb}{float}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{)}\PY{o}{/}\PY{p}{(}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{cell\PYZus{}size} \PY{o}{*} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{cell\PYZus{}size}\PY{p}{)}\PY{p}{)} 
+        
+            \PY{k}{for} \PY{n}{y} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{input\PYZus{}height}\PY{p}{)}\PY{p}{:}
+              \PY{k}{for} \PY{n}{x} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{input\PYZus{}width}\PY{p}{)}\PY{p}{:}
+                \PY{k}{for} \PY{n}{f} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{input\PYZus{}filters}\PY{p}{)}\PY{p}{:}
+                  \PY{n}{curr\PYZus{}x} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{x}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{)}
+                  \PY{n}{curr\PYZus{}y} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{y}\PY{o}{/}\PY{l+m+mi}{2}\PY{p}{)}
+                  \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inputs}\PY{o}{.}\PY{n}{dloss\PYZus{}dvalue}\PY{p}{[}\PY{n}{y}\PY{p}{,} \PY{n}{x}\PY{p}{,} \PY{n}{f}\PY{p}{]} \PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{dloss\PYZus{}dvalue}\PY{p}{[}\PY{n}{curr\PYZus{}y}\PY{p}{,} \PY{n}{curr\PYZus{}x}\PY{p}{,} \PY{n}{f}\PY{p}{]} \PY{o}{*} \PY{n}{d\PYZus{}xsq}
+                        
+          \PY{k}{def} \PY{n+nf}{gradient\PYZus{}step}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{step\PYZus{}size}\PY{p}{)}\PY{p}{:}
+            \PY{k}{pass}
+          
+        \PY{c+c1}{\PYZsh{} Double check that each op matches tensorflow}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Testing AvgPool...}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{op3} \PY{o}{=} \PY{n}{OpAvgPool}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{inputs}\PY{p}{)}
+        \PY{n}{tf\PYZus{}op3} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{avg\PYZus{}pool}\PY{p}{(}\PY{n}{tf\PYZus{}inputs}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{2}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{VALID}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{cmp\PYZus{}ops}\PY{p}{(}\PY{n}{op3}\PY{p}{,} \PY{n}{tf\PYZus{}op3}\PY{p}{,} \PY{n}{tf\PYZus{}inputs}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Testing AvgPool{\ldots}
+Forward pass:
+  Your Op shape: (5, 5, 3)
+  TensorFlow Op shape: (5, 5, 3)
+  Values equal: True
+Gradient wrt inputs:
+  Your Op shape: (10, 10, 3)
+  TensorFlow Op shape: (1, 10, 10, 3)
+  Values equal: True
+
+    \end{Verbatim}
+
+    \subsection{3.1.4 Softmax Cross-entropy Loss (10
+pts)}\label{softmax-cross-entropy-loss-10-pts}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}5}]:} \PY{k+kn}{import} \PY{n+nn}{math}
+        
+        \PY{k}{class} \PY{n+nc}{OpSoftmaxCrossEntropyLoss}\PY{p}{:}
+          \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}Cross\PYZhy{}entropy loss.\PYZdq{}\PYZdq{}\PYZdq{}}
+            
+          \PY{k}{def} \PY{n+nf}{\PYZus{}\PYZus{}init\PYZus{}\PYZus{}}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{logits}\PY{p}{,} \PY{n}{true\PYZus{}label}\PY{p}{)}\PY{p}{:}
+            \PY{l+s+sd}{\PYZdq{}\PYZdq{}\PYZdq{}}
+        \PY{l+s+sd}{    inputs:}
+        \PY{l+s+sd}{      logits: shape [1,1,num\PYZus{}classes]}
+        \PY{l+s+sd}{      true\PYZus{}label: scalar in range [0, num\PYZus{}classes\PYZhy{}1]}
+        \PY{l+s+sd}{    \PYZdq{}\PYZdq{}\PYZdq{}}
+            
+            \PY{c+c1}{\PYZsh{} Shape of the input feature map}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{num\PYZus{}classes} \PY{o}{=} \PY{n}{logits}\PY{o}{.}\PY{n}{value}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inputs} \PY{o}{=} \PY{n}{logits}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{true\PYZus{}label} \PY{o}{=} \PY{n}{true\PYZus{}label}
+            
+          \PY{k}{def} \PY{n+nf}{reset\PYZus{}values}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{max\PYZus{}label} \PY{o}{=} \PY{l+m+mi}{0}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{value} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{l+m+mi}{1}\PY{p}{,}\PY{p}{)}\PY{p}{)}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{softmax\PYZus{}prob} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{num\PYZus{}classes}\PY{p}{,}\PY{p}{)}\PY{p}{)}
+            
+          \PY{k}{def} \PY{n+nf}{forward}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} Reset value and gradient at start of forward pass}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{reset\PYZus{}values}\PY{p}{(}\PY{p}{)}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} Complete this method by:}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} (1) setting self.value to the scalar value of the }
+            \PY{c+c1}{\PYZsh{}\PYZsh{}     negative log probability of the true class under a Softmax distribution.}
+            \PY{c+c1}{\PYZsh{}\PYZsh{}     Loss = \PYZhy{}ln(exp(y\PYZus{}true) / sum\PYZus{}j (exp(y\PYZus{}j))), where y\PYZus{}j is the logits}
+            \PY{c+c1}{\PYZsh{}\PYZsh{}     value for class j.}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} (2) setting self.softmax\PYZus{}prob to the vector representing the probability}
+            \PY{c+c1}{\PYZsh{}\PYZsh{}     of each class according to the Softmax distribution}
+            \PY{c+c1}{\PYZsh{}\PYZsh{}     softmax\PYZus{}prob[j] = exp(y\PYZus{}i) / sum\PYZus{}j (exp(y\PYZus{}j)), where y\PYZus{}j is the logits}
+            \PY{c+c1}{\PYZsh{}\PYZsh{}     value for class j.}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} This will use}
+            \PY{c+c1}{\PYZsh{}\PYZsh{} self.inputs.value, a `1 x 1 x num\PYZus{}classes` tensor containing the logits}
+            \PY{n}{sum\PYZus{}exp\PYZus{}logits} \PY{o}{=} \PY{l+m+mi}{0}
+            
+            \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{num\PYZus{}classes}\PY{p}{)}\PY{p}{:}
+                \PY{n}{sum\PYZus{}exp\PYZus{}logits} \PY{o}{+}\PY{o}{=} \PY{n}{math}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,} \PY{n}{i}\PY{p}{]}\PY{p}{)}
+            \PY{k}{for} \PY{n}{i} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{num\PYZus{}classes}\PY{p}{)}\PY{p}{:}        
+                \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{softmax\PYZus{}prob}\PY{p}{[}\PY{n}{i}\PY{p}{]} \PY{o}{=} \PY{n}{math}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{,}\PY{n}{i}\PY{p}{]}\PY{p}{)} \PY{o}{/} \PY{n}{sum\PYZus{}exp\PYZus{}logits}
+            
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{value}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]} \PY{o}{=} \PY{o}{\PYZhy{}} \PY{n}{math}\PY{o}{.}\PY{n}{log}\PY{p}{(}\PY{n}{math}\PY{o}{.}\PY{n}{exp}\PY{p}{(}\PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inputs}\PY{o}{.}\PY{n}{value}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{true\PYZus{}label}\PY{o}{.}\PY{n}{value}\PY{p}{]}\PY{p}{)} \PY{o}{/} \PY{n}{sum\PYZus{}exp\PYZus{}logits}\PY{p}{)}
+                  
+          \PY{k}{def} \PY{n+nf}{backward}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{)}\PY{p}{:}
+            \PY{c+c1}{\PYZsh{} Loss = \PYZhy{}ln(exp(y\PYZus{}true) / sum\PYZus{}j (exp(y\PYZus{}j)))}
+            \PY{c+c1}{\PYZsh{} dLoss/dYk = exp(y\PYZus{}k) / sum\PYZus{}j (exp(y\PYZus{}j))}
+            \PY{c+c1}{\PYZsh{} dLoss/dYtrue = exp(y\PYZus{}true) / sum\PYZus{}j (exp(y\PYZus{}j)) \PYZhy{} 1}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inputs}\PY{o}{.}\PY{n}{dloss\PYZus{}dvalue}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{p}{:}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{softmax\PYZus{}prob}
+            \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{inputs}\PY{o}{.}\PY{n}{dloss\PYZus{}dvalue}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{,} \PY{l+m+mi}{0}\PY{p}{,} \PY{n+nb+bp}{self}\PY{o}{.}\PY{n}{true\PYZus{}label}\PY{o}{.}\PY{n}{value}\PY{p}{]} \PY{o}{+}\PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+                        
+          \PY{k}{def} \PY{n+nf}{gradient\PYZus{}step}\PY{p}{(}\PY{n+nb+bp}{self}\PY{p}{,} \PY{n}{step\PYZus{}size}\PY{p}{)}\PY{p}{:}
+            \PY{k}{pass}
+          
+        \PY{c+c1}{\PYZsh{} Double check that each op matches tensorflow}
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+se}{\PYZbs{}n}\PY{l+s+s2}{Testing Cross Entropy Loss...}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        \PY{n}{pooled} \PY{o}{=} \PY{n}{OpAvgPool}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{n}{inputs}\PY{p}{)}
+        \PY{n}{pooled}\PY{o}{.}\PY{n}{forward}\PY{p}{(}\PY{p}{)}
+        \PY{n}{tf\PYZus{}pooled} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{avg\PYZus{}pool}\PY{p}{(}\PY{n}{tf\PYZus{}inputs}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{p}{[}\PY{l+m+mi}{1}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{10}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{]}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{VALID}\PY{l+s+s2}{\PYZdq{}}\PY{p}{)}
+        
+        \PY{n}{true\PYZus{}label} \PY{o}{=} \PY{n}{Variable}\PY{p}{(}\PY{p}{)}
+        \PY{n}{op4} \PY{o}{=} \PY{n}{OpSoftmaxCrossEntropyLoss}\PY{p}{(}\PY{n}{pooled}\PY{p}{,} \PY{n}{true\PYZus{}label}\PY{p}{)}
+        \PY{n}{tf\PYZus{}op4} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{softmax\PYZus{}cross\PYZus{}entropy\PYZus{}with\PYZus{}logits\PYZus{}v2}\PY{p}{(}\PY{n}{logits}\PY{o}{=}\PY{n}{tf\PYZus{}pooled}\PY{p}{,} 
+                                                            \PY{n}{labels}\PY{o}{=}\PY{n}{tf}\PY{o}{.}\PY{n}{one\PYZus{}hot}\PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{constant}\PY{p}{(}\PY{l+m+mi}{0}\PY{p}{)}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{)}
+        \PY{n}{cmp\PYZus{}ops}\PY{p}{(}\PY{n}{op4}\PY{p}{,} \PY{n}{tf\PYZus{}op4}\PY{p}{,} \PY{n}{tf\PYZus{}pooled}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+
+Testing Cross Entropy Loss{\ldots}
+Forward pass:
+  Your Op shape: (1,)
+  TensorFlow Op shape: (1, 1)
+  Values equal: True
+Gradient wrt inputs:
+  Your Op shape: (1, 1, 3)
+  TensorFlow Op shape: (1, 1, 1, 3)
+  Values equal: True
+
+    \end{Verbatim}
+
+    \subsection{3.1.5 Run for a few iterations (10
+pts)}\label{run-for-a-few-iterations-10-pts}
+
+Here we assemble all of our operations into a full convolutional neural
+network. We then run stochastic gradient descent on a small collection
+of ten images to ensure that the loss is decreasing.
+
+Run this cell to plot 100 iterations of training. \textbf{(5 pts)}
+
+Why is this plot jagged? What is it about our architecture or training
+procedure that causes this, and how might adjusting these factors change
+the shape of this curve? \textbf{(5 pts)}
+
+\subsection{3.1.5 Answers}\label{answers}
+
+1 - Cell is run with 100 iterations, reaching \textless{} .1 loss at
+iteration 21
+
+2 - The plot is jagged in several locations because of an
+over-adjustment from the learning rate. In certain cases, the learning
+rate can overshoot the minimum value, causing a spike in the amount of
+loss. One modification that can be made is to use a smaller learning
+rate, so the steps are less likely to miss the minimum. This can also
+have its own issues, such as taking more iterations to find the minimum,
+wasting time and resources. Another modification could be, rather than
+just reducing the learning rate totally, but reduce the learning rate
+every couple of iterations. This could even be improved on by
+automatically adjusting the learning rate, depending on the current loss
+value and whether or not it is improving the loss.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}12}]:} \PY{k+kn}{from} \PY{n+nn}{tensorflow}\PY{n+nn}{.}\PY{n+nn}{examples}\PY{n+nn}{.}\PY{n+nn}{tutorials}\PY{n+nn}{.}\PY{n+nn}{mnist} \PY{k}{import} \PY{n}{input\PYZus{}data}
+         
+         \PY{c+c1}{\PYZsh{} Construct a mini network for MNIST}
+         \PY{n}{inputs} \PY{o}{=} \PY{n}{Variable}\PY{p}{(}\PY{p}{)}
+         \PY{n}{true\PYZus{}label} \PY{o}{=} \PY{n}{Variable}\PY{p}{(}\PY{p}{)}
+         \PY{n}{inputs}\PY{o}{.}\PY{n}{value} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{normal}\PY{p}{(}\PY{n}{size}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{28}\PY{p}{,} \PY{l+m+mi}{28}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+         \PY{n}{inputs}\PY{o}{.}\PY{n}{dloss\PYZus{}dvalue} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{normal}\PY{p}{(}\PY{n}{size}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{28}\PY{p}{,} \PY{l+m+mi}{28}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n}{op1} \PY{o}{=} \PY{n}{OpConv2D}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{n}{inputs}\PY{p}{)} \PY{c+c1}{\PYZsh{} Output is 28\PYZhy{}5+1=24}
+         \PY{n}{op2} \PY{o}{=} \PY{n}{OpAvgPool}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{op1}\PY{p}{)}      \PY{c+c1}{\PYZsh{} Output is 24/2=12}
+         \PY{n}{op3} \PY{o}{=} \PY{n}{OpRelu}\PY{p}{(}\PY{n}{op2}\PY{p}{)}
+         
+         \PY{n}{op4} \PY{o}{=} \PY{n}{OpConv2D}\PY{p}{(}\PY{l+m+mi}{16}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{n}{op3}\PY{p}{)} \PY{c+c1}{\PYZsh{} Output is 12\PYZhy{}5+1=8}
+         \PY{n}{op5} \PY{o}{=} \PY{n}{OpAvgPool}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{op4}\PY{p}{)}      \PY{c+c1}{\PYZsh{} Output is 8/2=4}
+         \PY{n}{op6} \PY{o}{=} \PY{n}{OpRelu}\PY{p}{(}\PY{n}{op5}\PY{p}{)}
+         
+         \PY{n}{op7} \PY{o}{=} \PY{n}{OpConv2D}\PY{p}{(}\PY{l+m+mi}{10}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{,} \PY{n}{op6}\PY{p}{)} \PY{c+c1}{\PYZsh{} Output is 4\PYZhy{}3+1=2}
+         \PY{n}{op8} \PY{o}{=} \PY{n}{OpAvgPool}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,} \PY{n}{op7}\PY{p}{)}      \PY{c+c1}{\PYZsh{} Output is 2/2=1}
+         
+         \PY{n}{op9} \PY{o}{=} \PY{n}{OpSoftmaxCrossEntropyLoss}\PY{p}{(}\PY{n}{op8}\PY{p}{,} \PY{n}{true\PYZus{}label}\PY{p}{)}
+         \PY{n}{ops\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{n}{op1}\PY{p}{,}\PY{n}{op2}\PY{p}{,}\PY{n}{op3}\PY{p}{,}\PY{n}{op4}\PY{p}{,}\PY{n}{op5}\PY{p}{,}\PY{n}{op6}\PY{p}{,}\PY{n}{op7}\PY{p}{,}\PY{n}{op8}\PY{p}{,}\PY{n}{op9}\PY{p}{]}
+         
+         \PY{c+c1}{\PYZsh{} Run for a few iterations, make sure loss is going down}
+         \PY{n}{learning\PYZus{}rate} \PY{o}{=} \PY{l+m+mf}{0.2}
+         \PY{n}{inputs}\PY{o}{.}\PY{n}{value} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{random}\PY{o}{.}\PY{n}{normal}\PY{p}{(}\PY{n}{size}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{28}\PY{p}{,} \PY{l+m+mi}{28}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+         
+         \PY{n}{mnist} \PY{o}{=} \PY{n}{input\PYZus{}data}\PY{o}{.}\PY{n}{read\PYZus{}data\PYZus{}sets}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{MNIST\PYZus{}data}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{n}{one\PYZus{}hot}\PY{o}{=}\PY{k+kc}{False}\PY{p}{)}
+         
+         \PY{n}{num\PYZus{}its} \PY{o}{=} \PY{l+m+mi}{100}
+         \PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{10}
+         \PY{n}{batch\PYZus{}x}\PY{p}{,} \PY{n}{batch\PYZus{}y} \PY{o}{=} \PY{n}{mnist}\PY{o}{.}\PY{n}{train}\PY{o}{.}\PY{n}{next\PYZus{}batch}\PY{p}{(}\PY{n}{batch\PYZus{}size}\PY{p}{)}
+         
+         \PY{n}{loss\PYZus{}list} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+         
+         \PY{k}{for} \PY{n}{it} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}its}\PY{p}{)}\PY{p}{:}
+           \PY{n}{loss\PYZus{}of\PYZus{}batch} \PY{o}{=} \PY{l+m+mf}{0.0}
+           
+           \PY{k}{for} \PY{n}{im} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{batch\PYZus{}size}\PY{p}{)}\PY{p}{:}
+             \PY{n}{inputs}\PY{o}{.}\PY{n}{value} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{reshape}\PY{p}{(}\PY{n}{batch\PYZus{}x}\PY{p}{[}\PY{n}{im}\PY{p}{]}\PY{p}{,} \PY{p}{(}\PY{l+m+mi}{28}\PY{p}{,}\PY{l+m+mi}{28}\PY{p}{,}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+             \PY{n}{true\PYZus{}label}\PY{o}{.}\PY{n}{value} \PY{o}{=} \PY{n}{batch\PYZus{}y}\PY{p}{[}\PY{n}{im}\PY{p}{]}
+           
+             \PY{k}{for} \PY{n}{op} \PY{o+ow}{in} \PY{n}{ops\PYZus{}list}\PY{p}{:}
+               \PY{n}{op}\PY{o}{.}\PY{n}{forward}\PY{p}{(}\PY{p}{)}
+         
+             \PY{n}{loss\PYZus{}of\PYZus{}batch} \PY{o}{+}\PY{o}{=} \PY{n}{ops\PYZus{}list}\PY{p}{[}\PY{o}{\PYZhy{}}\PY{l+m+mi}{1}\PY{p}{]}\PY{o}{.}\PY{n}{value}
+             
+             \PY{k}{for} \PY{n}{op} \PY{o+ow}{in} \PY{n+nb}{reversed}\PY{p}{(}\PY{n}{ops\PYZus{}list}\PY{p}{)}\PY{p}{:}
+               \PY{n}{op}\PY{o}{.}\PY{n}{backward}\PY{p}{(}\PY{p}{)}
+               \PY{n}{op}\PY{o}{.}\PY{n}{gradient\PYZus{}step}\PY{p}{(}\PY{n}{learning\PYZus{}rate}\PY{p}{)}
+           
+           \PY{n}{loss\PYZus{}list}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{loss\PYZus{}of\PYZus{}batch}\PY{p}{)}
+           
+           \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{Iteration }\PY{l+s+s2}{\PYZdq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{it}\PY{p}{)} \PY{o}{+} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{ Loss: }\PY{l+s+s2}{\PYZdq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{loss\PYZus{}of\PYZus{}batch}\PY{p}{)}\PY{p}{)}
+           
+           
+         \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}its}\PY{p}{)}\PY{p}{,} \PY{n}{loss\PYZus{}list}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Extracting MNIST\_data\textbackslash{}train-images-idx3-ubyte.gz
+Extracting MNIST\_data\textbackslash{}train-labels-idx1-ubyte.gz
+Extracting MNIST\_data\textbackslash{}t10k-images-idx3-ubyte.gz
+Extracting MNIST\_data\textbackslash{}t10k-labels-idx1-ubyte.gz
+Iteration 0 Loss: [23.41012041]
+Iteration 1 Loss: [23.04136509]
+Iteration 2 Loss: [33.02728799]
+Iteration 3 Loss: [22.87526167]
+Iteration 4 Loss: [23.91612511]
+Iteration 5 Loss: [24.99470937]
+Iteration 6 Loss: [22.92684561]
+Iteration 7 Loss: [23.12011341]
+Iteration 8 Loss: [23.6434794]
+Iteration 9 Loss: [20.99400669]
+Iteration 10 Loss: [19.65962341]
+Iteration 11 Loss: [17.43971532]
+Iteration 12 Loss: [16.81324139]
+Iteration 13 Loss: [11.25986187]
+Iteration 14 Loss: [11.60630934]
+Iteration 15 Loss: [7.75956445]
+Iteration 16 Loss: [3.91766387]
+Iteration 17 Loss: [2.61136097]
+Iteration 18 Loss: [0.56996349]
+Iteration 19 Loss: [0.17073335]
+Iteration 20 Loss: [0.10324958]
+Iteration 21 Loss: [0.07379704]
+Iteration 22 Loss: [0.05912035]
+Iteration 23 Loss: [0.04928768]
+Iteration 24 Loss: [0.04206357]
+Iteration 25 Loss: [0.03675321]
+Iteration 26 Loss: [0.03248868]
+Iteration 27 Loss: [0.02912694]
+Iteration 28 Loss: [0.02635941]
+Iteration 29 Loss: [0.02407387]
+Iteration 30 Loss: [0.02211561]
+Iteration 31 Loss: [0.02045481]
+Iteration 32 Loss: [0.01902443]
+Iteration 33 Loss: [0.01776665]
+Iteration 34 Loss: [0.01665903]
+Iteration 35 Loss: [0.01567942]
+Iteration 36 Loss: [0.01480166]
+Iteration 37 Loss: [0.01400921]
+Iteration 38 Loss: [0.01328856]
+Iteration 39 Loss: [0.01263496]
+Iteration 40 Loss: [0.012043]
+Iteration 41 Loss: [0.01149989]
+Iteration 42 Loss: [0.01100061]
+Iteration 43 Loss: [0.01054451]
+Iteration 44 Loss: [0.01012262]
+Iteration 45 Loss: [0.00973088]
+Iteration 46 Loss: [0.00936687]
+Iteration 47 Loss: [0.00902727]
+Iteration 48 Loss: [0.00871002]
+Iteration 49 Loss: [0.00841282]
+Iteration 50 Loss: [0.00813405]
+Iteration 51 Loss: [0.00787185]
+Iteration 52 Loss: [0.00762462]
+Iteration 53 Loss: [0.00739158]
+Iteration 54 Loss: [0.00717145]
+Iteration 55 Loss: [0.00696317]
+Iteration 56 Loss: [0.00676585]
+Iteration 57 Loss: [0.00657882]
+Iteration 58 Loss: [0.0064013]
+Iteration 59 Loss: [0.00623373]
+Iteration 60 Loss: [0.00607424]
+Iteration 61 Loss: [0.00592191]
+Iteration 62 Loss: [0.00577619]
+Iteration 63 Loss: [0.00563655]
+Iteration 64 Loss: [0.0055016]
+Iteration 65 Loss: [0.00537266]
+Iteration 66 Loss: [0.00524915]
+Iteration 67 Loss: [0.00513098]
+Iteration 68 Loss: [0.00501779]
+Iteration 69 Loss: [0.00490931]
+Iteration 70 Loss: [0.00480489]
+Iteration 71 Loss: [0.00470461]
+Iteration 72 Loss: [0.00460806]
+Iteration 73 Loss: [0.00451522]
+Iteration 74 Loss: [0.00442572]
+Iteration 75 Loss: [0.00433952]
+Iteration 76 Loss: [0.00425634]
+Iteration 77 Loss: [0.00417612]
+Iteration 78 Loss: [0.00409893]
+Iteration 79 Loss: [0.00402436]
+Iteration 80 Loss: [0.00395226]
+Iteration 81 Loss: [0.00388254]
+Iteration 82 Loss: [0.00381505]
+Iteration 83 Loss: [0.00374958]
+Iteration 84 Loss: [0.00368617]
+Iteration 85 Loss: [0.00362475]
+Iteration 86 Loss: [0.00356524]
+Iteration 87 Loss: [0.00350752]
+Iteration 88 Loss: [0.00345152]
+Iteration 89 Loss: [0.00339719]
+Iteration 90 Loss: [0.00334455]
+Iteration 91 Loss: [0.00329337]
+Iteration 92 Loss: [0.00324365]
+Iteration 93 Loss: [0.00319529]
+Iteration 94 Loss: [0.00314828]
+Iteration 95 Loss: [0.00310284]
+Iteration 96 Loss: [0.00305856]
+Iteration 97 Loss: [0.00301541]
+Iteration 98 Loss: [0.0029735]
+Iteration 99 Loss: [0.0029327]
+
+    \end{Verbatim}
+
+\begin{Verbatim}[commandchars=\\\{\}]
+{\color{outcolor}Out[{\color{outcolor}12}]:} [<matplotlib.lines.Line2D at 0x520bb70>]
+\end{Verbatim}
+            
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_18_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \subsection{3.1.6 Extra credit (5 points)}\label{extra-credit-5-points}
+
+Extend the functionality of one of these operations (e.g. add stride,
+dilation, or padding to the 2D Convolution) or implement a new one (e.g.
+fully-connected layer).
+
+\subsection{3.1.6 Extra Credit Attempt}\label{extra-credit-attempt}
+
+An attempt was made at padding the 2D Convolution (see funtion
+pad\_inputs()). However, this was not completed in time for the
+assignment
+
+    \section{3.2 Training an image classifier (40
+points)}\label{training-an-image-classifier-40-points}
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}1}]:} \PY{c+c1}{\PYZsh{}@title (Hidden utility code: RUN ME FIRST) \PYZob{} display\PYZhy{}mode: \PYZdq{}form\PYZdq{} \PYZcb{}}
+        \PY{c+c1}{\PYZsh{}!git clone https://github.com/tensorflow/models.git /content \PYZgt{}/dev/null}
+        \PY{k+kn}{import} \PY{n+nn}{sys}
+        \PY{k+kn}{import} \PY{n+nn}{math}
+        \PY{n}{sys}\PY{o}{.}\PY{n}{path}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{C:}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{content}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{tutorials}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{image}\PY{l+s+se}{\PYZbs{}\PYZbs{}}\PY{l+s+s1}{cifar10}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{k+kn}{from} \PY{n+nn}{datetime} \PY{k}{import} \PY{n}{datetime}
+        \PY{k+kn}{import} \PY{n+nn}{matplotlib}\PY{n+nn}{.}\PY{n+nn}{pyplot} \PY{k}{as} \PY{n+nn}{plt}
+        \PY{k+kn}{import} \PY{n+nn}{numpy} \PY{k}{as} \PY{n+nn}{np}
+        
+        \PY{n}{plt}\PY{o}{.}\PY{n}{rcParams}\PY{p}{[}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{axes.facecolor}\PY{l+s+s1}{\PYZsq{}}\PY{p}{]} \PY{o}{=} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{white}\PY{l+s+s1}{\PYZsq{}}
+        
+        \PY{k+kn}{import} \PY{n+nn}{tensorflow} \PY{k}{as} \PY{n+nn}{tf}
+        \PY{n}{tf}\PY{o}{.}\PY{n}{reset\PYZus{}default\PYZus{}graph}\PY{p}{(}\PY{p}{)}
+        \PY{k}{try}\PY{p}{:}
+          \PY{n}{tf}\PY{o}{.}\PY{n}{app}\PY{o}{.}\PY{n}{flags}\PY{o}{.}\PY{n}{FLAGS}\PY{o}{.}\PY{n}{f}
+        \PY{k}{except} \PY{n+ne}{Exception}\PY{p}{:}
+          \PY{n}{tf}\PY{o}{.}\PY{n}{app}\PY{o}{.}\PY{n}{flags}\PY{o}{.}\PY{n}{DEFINE\PYZus{}string}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{f}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{,} \PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{l+s+s2}{Placeholder.}\PY{l+s+s2}{\PYZdq{}\PYZdq{}\PYZdq{}}\PY{p}{)}
+        \PY{k+kn}{import} \PY{n+nn}{cifar10}
+        \PY{n}{tf}\PY{o}{.}\PY{n}{app}\PY{o}{.}\PY{n}{flags}\PY{o}{.}\PY{n}{FLAGS}\PY{o}{.}\PY{n}{batch\PYZus{}size} \PY{o}{=} \PY{l+m+mi}{100}
+        \PY{c+c1}{\PYZsh{}from tensorflow.examples.models.tutorials.image.cifar10 import cifar10}
+        
+        \PY{k}{def} \PY{n+nf}{plot\PYZus{}filters}\PY{p}{(}\PY{n}{filters}\PY{p}{,} \PY{n}{xlabel}\PY{o}{=}\PY{k+kc}{None}\PY{p}{,} \PY{n}{ylabel}\PY{o}{=}\PY{k+kc}{None}\PY{p}{)}\PY{p}{:}
+          \PY{n+nb}{print}\PY{p}{(}\PY{n}{filters}\PY{o}{.}\PY{n}{shape}\PY{p}{)}
+          \PY{c+c1}{\PYZsh{} filters: height x width x channels x num\PYZus{}filters}
+          \PY{n}{num\PYZus{}filters} \PY{o}{=} \PY{n}{filters}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{3}\PY{p}{]}
+          \PY{n}{filter\PYZus{}height} \PY{o}{=} \PY{n}{filters}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{0}\PY{p}{]}
+          \PY{n}{filter\PYZus{}width} \PY{o}{=} \PY{n}{filters}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{1}\PY{p}{]}
+          \PY{n}{filter\PYZus{}channels} \PY{o}{=} \PY{n}{filters}\PY{o}{.}\PY{n}{shape}\PY{p}{[}\PY{l+m+mi}{2}\PY{p}{]}
+          \PY{n}{spacing} \PY{o}{=} \PY{l+m+mi}{1}
+          \PY{n}{rows} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{math}\PY{o}{.}\PY{n}{ceil}\PY{p}{(}\PY{n}{math}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{num\PYZus{}filters}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+          \PY{n}{cols} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{math}\PY{o}{.}\PY{n}{ceil}\PY{p}{(}\PY{n}{math}\PY{o}{.}\PY{n}{sqrt}\PY{p}{(}\PY{n}{num\PYZus{}filters}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+          \PY{n}{plot} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{zeros}\PY{p}{(}\PY{p}{(}\PY{n}{rows}\PY{o}{*}\PY{p}{(}\PY{n}{filter\PYZus{}height}\PY{o}{+}\PY{n}{spacing}\PY{p}{)}\PY{p}{,} \PY{n}{cols}\PY{o}{*}\PY{p}{(}\PY{n}{filter\PYZus{}width}\PY{o}{+}\PY{n}{spacing}\PY{p}{)}\PY{p}{,} \PY{n+nb}{min}\PY{p}{(}\PY{n}{filter\PYZus{}channels}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)} \PY{p}{)}\PY{p}{)}
+          
+          \PY{n}{min\PYZus{}value} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{min}\PY{p}{(}\PY{n}{filters}\PY{p}{)}
+          \PY{n}{max\PYZus{}value} \PY{o}{=} \PY{n}{np}\PY{o}{.}\PY{n}{max}\PY{p}{(}\PY{n}{filters}\PY{p}{)}
+          \PY{n}{filters} \PY{o}{=} \PY{p}{(}\PY{n}{filters} \PY{o}{\PYZhy{}} \PY{n}{min\PYZus{}value}\PY{p}{)} \PY{o}{/} \PY{p}{(}\PY{n}{max\PYZus{}value} \PY{o}{\PYZhy{}} \PY{n}{min\PYZus{}value}\PY{p}{)}
+          
+          \PY{k}{for} \PY{n}{f} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}filters}\PY{p}{)}\PY{p}{:}
+            \PY{n}{r} \PY{o}{=} \PY{n+nb}{int}\PY{p}{(}\PY{n}{f}\PY{o}{/}\PY{n}{cols}\PY{p}{)}
+            \PY{n}{c} \PY{o}{=} \PY{n}{f} \PY{o}{\PYZhy{}} \PY{n}{r}\PY{o}{*}\PY{n}{cols}
+            \PY{n}{plot}\PY{p}{[}\PY{n}{r}\PY{o}{*}\PY{p}{(}\PY{n}{filter\PYZus{}height}\PY{o}{+}\PY{n}{spacing}\PY{p}{)}\PY{p}{:}\PY{n}{r}\PY{o}{*}\PY{p}{(}\PY{n}{filter\PYZus{}height}\PY{o}{+}\PY{n}{spacing}\PY{p}{)}\PY{o}{+}\PY{n}{filter\PYZus{}height}\PY{p}{,}
+                \PY{n}{c}\PY{o}{*}\PY{p}{(}\PY{n}{filter\PYZus{}width}\PY{o}{+}\PY{n}{spacing}\PY{p}{)}\PY{p}{:}\PY{n}{c}\PY{o}{*}\PY{p}{(}\PY{n}{filter\PYZus{}width}\PY{o}{+}\PY{n}{spacing}\PY{p}{)}\PY{o}{+}\PY{n}{filter\PYZus{}width}\PY{p}{,}\PY{p}{:}\PY{p}{]} \PY{o}{=} \PY{n}{filters}\PY{p}{[}\PY{p}{:}\PY{p}{,}\PY{p}{:}\PY{p}{,}\PY{l+m+mi}{0}\PY{p}{:}\PY{n+nb}{min}\PY{p}{(}\PY{n}{filter\PYZus{}channels}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{)}\PY{p}{,}\PY{n}{f}\PY{p}{]}
+          
+          \PY{n}{plt}\PY{o}{.}\PY{n}{grid}\PY{p}{(}\PY{k+kc}{False}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{imshow}\PY{p}{(}\PY{n}{np}\PY{o}{.}\PY{n}{squeeze}\PY{p}{(}\PY{n}{plot}\PY{p}{)}\PY{p}{)}
+          \PY{k}{if} \PY{n}{xlabel} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None}\PY{p}{:}
+            \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{n}{xlabel}\PY{p}{)}
+          \PY{k}{if} \PY{n}{ylabel} \PY{o+ow}{is} \PY{o+ow}{not} \PY{k+kc}{None}\PY{p}{:}
+            \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{n}{ylabel}\PY{p}{)}
+          \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+        
+        \PY{n}{cifar10}\PY{o}{.}\PY{n}{maybe\PYZus{}download\PYZus{}and\PYZus{}extract}\PY{p}{(}\PY{p}{)}
+        \PY{n}{images}\PY{p}{,} \PY{n}{labels} \PY{o}{=} \PY{n}{cifar10}\PY{o}{.}\PY{n}{inputs}\PY{p}{(}\PY{k+kc}{False}\PY{p}{)}
+        \PY{n}{test\PYZus{}images}\PY{p}{,} \PY{n}{test\PYZus{}labels} \PY{o}{=} \PY{n}{cifar10}\PY{o}{.}\PY{n}{inputs}\PY{p}{(}\PY{k+kc}{True}\PY{p}{)}
+\end{Verbatim}
+
+
+    \subsection{3.2.1 Early stopping (15
+points)}\label{early-stopping-15-points}
+
+We have specified a very simple convolutional neural network to classify
+images from the Cifar-10 dataset. We then provide a training loop to
+optimize the weights of the network. Your task is to add Early Stopping
+(ES) to this training loop. Validation accuracy should be measured
+periodically, and training should stop if the validation accuracy does
+not reach a new absolute maximum after some number of measurements (this
+is called the "patience"). After training, we then measure the test
+accuracy. Before implementing ES, run the following cell to see a plot
+of the training loss and validation accuracy. Report the test accuracy
+you have found with ES.
+
+\subsection{Early Stopping
+Implementation}\label{early-stopping-implementation}
+
+Early stopping is implemented by continually checking the value of the
+current accuracy within a certain incremental window. At each increment,
+the current accuracy is compared to the greatest accuracy found in the
+testing iterations, saving the current session if it is the greatest.
+The implementation includes a patience paramenter, to indicate how many
+increments it will search for a new maximum until quitting.
+
+For this implementation, an approach was used to find the best
+validation increment and patience value similar to hyperparameter
+tuning. A large set of combinations was tested (see
+Early\_Stopping\_Parameter\_Tuning PDF in directory Early\_Stopping),
+finally resulting in the parameters chosen - a validation increment of
+15 with a maximum patience of 25. While the values were recorded, none
+of the .ipynb notebooks with the results were saved (although there are
+several screenshots from results present in the directory).
+
+\subsection{3.2.2 Tuning hyperparameters (25
+points)}\label{tuning-hyperparameters-25-points}
+
+The hyperparameters we have chosen are not necessarily optimal. Pick two
+factors to search over (e.g. number of layers, filters per layer,
+learning rate, convolutional kernel size, etc.). Then write a procedure
+that uses grid search to find the combination of these hyperparameters
+that yields the highest validation accuracy. Finally, report the test
+accuracy achieved by this model.
+
+\subsection{Tuning Hyperparameters
+Implementation}\label{tuning-hyperparameters-implementation}
+
+The two hyperparameters chosen for tuning in this implementation were
+learning rate and filter size. A large set of combinations was tested
+(see Hyperparameter\_Tuning\_Results PDF in directory
+Tuning\_Hyperparameters), with the learning rate ranging from .001 to .5
+and the filter size ranging from 32 to 128 (actual tested values can be
+seen below in lists or in the pdf). Unfortunately, there was a
+significant degredation of run time when attempting to calculate
+multiple hyperparameter combinations together. Therefore, the
+corresponding runs that led to each values are split into multiple
+notebooks, found in the Tuning\_Hyperparameters directory. Each notebook
+is run over multiple filter sizes, keeping the learning rate values
+limited to one or two. The different notebooks can be found in files
+with the following format "Assignment3\_learningrate\_p\#.ipynb", mostly
+split between 2 notebooks, with an exception of .2 being in three. In
+the end, the best parameters found in this testing were a learning rate
+of .06 and a filter size of 128.
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+{\color{incolor}In [{\color{incolor}2}]:} \PY{c+c1}{\PYZsh{}Thweid: Added garbage collector in the attempt to speed up performance}
+        \PY{k+kn}{import} \PY{n+nn}{gc}
+        
+        \PY{c+c1}{\PYZsh{}Thweid: Parameters included for hyperparameter tuning}
+        \PY{c+c1}{\PYZsh{}        Lists were used to batch process different learning rates with different filter sizes}
+        \PY{c+c1}{\PYZsh{}all\PYZus{}learning\PYZus{}rates = [.001, .005, .01, .02, .025, .05, .06 , .075, .1, .2, .5 ]}
+        \PY{c+c1}{\PYZsh{}all\PYZus{}filter\PYZus{}sizes = [ 32, 48, 64, 80, 96, 112, 128]}
+        \PY{n}{best\PYZus{}learning\PYZus{}rate} \PY{o}{=} \PY{p}{[}\PY{o}{.}\PY{l+m+mi}{06}\PY{p}{]} 
+        \PY{n}{best\PYZus{}filter\PYZus{}size} \PY{o}{=} \PY{p}{[}\PY{l+m+mi}{128}\PY{p}{]}
+        
+        \PY{c+c1}{\PYZsh{}Parameters to keep track of the best total session through hyperparameter tuning}
+        \PY{n}{best\PYZus{}valid\PYZus{}acc} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+        \PY{n}{best\PYZus{}sess\PYZus{}path} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{/tmp/best\PYZhy{}model.ckpt}\PY{l+s+s2}{\PYZdq{}}
+        
+        \PY{n}{sess} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{Session}\PY{p}{(}\PY{p}{)}
+        \PY{k}{with} \PY{n}{sess}\PY{o}{.}\PY{n}{as\PYZus{}default}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+          \PY{k}{for} \PY{n}{lr} \PY{o+ow}{in} \PY{n}{best\PYZus{}learning\PYZus{}rate}\PY{p}{:}  
+            \PY{k}{for} \PY{n}{f} \PY{o+ow}{in} \PY{n}{best\PYZus{}filter\PYZus{}size}\PY{p}{:}
+        
+              \PY{n}{tf}\PY{o}{.}\PY{n}{train}\PY{o}{.}\PY{n}{start\PYZus{}queue\PYZus{}runners}\PY{p}{(}\PY{p}{)}
+              \PY{n}{im\PYZus{}width} \PY{o}{=} \PY{l+m+mi}{24}
+        
+              \PY{c+c1}{\PYZsh{} Define placeholders for image and label}
+              \PY{n}{y\PYZus{}} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{placeholder}\PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{float32}\PY{p}{,} \PY{p}{[}\PY{k+kc}{None}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{]}\PY{p}{)}
+              \PY{n}{x} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{placeholder}\PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{float32}\PY{p}{,} \PY{p}{[}\PY{k+kc}{None}\PY{p}{,} \PY{n}{im\PYZus{}width}\PY{p}{,} \PY{n}{im\PYZus{}width}\PY{p}{,} \PY{l+m+mi}{3}\PY{p}{]}\PY{p}{)}
+        
+              \PY{c+c1}{\PYZsh{} Define a convolutional neural network (CNN)}
+              \PY{n}{cnnL1} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{layers}\PY{o}{.}\PY{n}{conv2d}\PY{p}{(}\PY{n}{x}\PY{p}{,} \PY{n}{f}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{n}{strides}\PY{o}{=}\PY{p}{(}\PY{l+m+mi}{2}\PY{p}{,}\PY{l+m+mi}{2}\PY{p}{)}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{n}{tf}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{relu}\PY{p}{)}
+              \PY{n}{cnnL2} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{layers}\PY{o}{.}\PY{n}{conv2d}\PY{p}{(}\PY{n}{cnnL1}\PY{p}{,} \PY{n}{f}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{n}{tf}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{relu}\PY{p}{)}
+              \PY{n}{cnnL3} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{layers}\PY{o}{.}\PY{n}{conv2d}\PY{p}{(}\PY{n}{cnnL2}\PY{p}{,} \PY{n}{f}\PY{p}{,} \PY{l+m+mi}{5}\PY{p}{,} \PY{n}{activation}\PY{o}{=}\PY{n}{tf}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{relu}\PY{p}{)}
+              \PY{n}{cnn} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{reduce\PYZus{}sum}\PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{reduce\PYZus{}sum}\PY{p}{(}\PY{n}{cnnL3}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{n}{axis}\PY{o}{=}\PY{l+m+mi}{1}\PY{p}{)}
+              \PY{n}{cnn} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{contrib}\PY{o}{.}\PY{n}{layers}\PY{o}{.}\PY{n}{flatten}\PY{p}{(}\PY{n}{cnn}\PY{p}{)}
+              \PY{n}{y\PYZus{}cnn} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{layers}\PY{o}{.}\PY{n}{dense}\PY{p}{(}\PY{n}{cnn}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}
+        
+              \PY{n}{cross\PYZus{}entropy\PYZus{}cnn} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{reduce\PYZus{}mean}\PY{p}{(}
+                  \PY{n}{tf}\PY{o}{.}\PY{n}{nn}\PY{o}{.}\PY{n}{softmax\PYZus{}cross\PYZus{}entropy\PYZus{}with\PYZus{}logits\PYZus{}v2}\PY{p}{(}\PY{n}{labels}\PY{o}{=}\PY{n}{y\PYZus{}}\PY{p}{,} \PY{n}{logits}\PY{o}{=}\PY{n}{y\PYZus{}cnn}\PY{p}{)}\PY{p}{)}
+              \PY{n}{train\PYZus{}step\PYZus{}cnn} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{train}\PY{o}{.}\PY{n}{GradientDescentOptimizer}\PY{p}{(}\PY{n}{lr}\PY{p}{)}\PY{o}{.}\PY{n}{minimize}\PY{p}{(}\PY{n}{cross\PYZus{}entropy\PYZus{}cnn}\PY{p}{)}
+        
+              \PY{n}{correct\PYZus{}prediction\PYZus{}cnn} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{equal}\PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{n}{y\PYZus{}cnn}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{n}{tf}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{n}{y\PYZus{}}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}\PY{p}{)}
+              \PY{n}{accuracy\PYZus{}cnn} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{reduce\PYZus{}mean}\PY{p}{(}\PY{n}{tf}\PY{o}{.}\PY{n}{cast}\PY{p}{(}\PY{n}{correct\PYZus{}prediction\PYZus{}cnn}\PY{p}{,} \PY{n}{tf}\PY{o}{.}\PY{n}{float32}\PY{p}{)}\PY{p}{)}
+        
+              \PY{n}{tf}\PY{o}{.}\PY{n}{global\PYZus{}variables\PYZus{}initializer}\PY{p}{(}\PY{p}{)}\PY{o}{.}\PY{n}{run}\PY{p}{(}\PY{n}{session}\PY{o}{=}\PY{n}{sess}\PY{p}{)}
+        
+              \PY{c+c1}{\PYZsh{}Thweid: Additional values added for Early Stopping }
+              \PY{c+c1}{\PYZsh{}        Patience values from parameter tuning mentioned above}
+              \PY{c+c1}{\PYZsh{}Use saver to save the current session with the best results from the validatio}
+              \PY{n}{saver} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{train}\PY{o}{.}\PY{n}{Saver}\PY{p}{(}\PY{p}{)}
+              \PY{n}{best\PYZus{}sess\PYZus{}path} \PY{o}{=} \PY{l+s+s2}{\PYZdq{}}\PY{l+s+s2}{/tmp/model.ckpt}\PY{l+s+s2}{\PYZdq{}}
+              \PY{n}{curr\PYZus{}max\PYZus{}accuracy} \PY{o}{=} \PY{o}{\PYZhy{}}\PY{l+m+mi}{1}
+              \PY{n}{curr\PYZus{}patience} \PY{o}{=} \PY{l+m+mi}{0}
+              \PY{n}{max\PYZus{}patience} \PY{o}{=} \PY{l+m+mi}{25}
+              \PY{n}{validation\PYZus{}increment} \PY{o}{=} \PY{l+m+mi}{15}
+              \PY{n}{quit\PYZus{}flag} \PY{o}{=} \PY{k+kc}{False}
+        
+              \PY{c+c1}{\PYZsh{} Train}
+              \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Training... }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{datetime}\PY{o}{.}\PY{n}{now}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+              \PY{n}{valid\PYZus{}batch\PYZus{}xs}\PY{p}{,} \PY{n}{valid\PYZus{}batch\PYZus{}ys} \PY{o}{=} \PY{n}{sess}\PY{o}{.}\PY{n}{run}\PY{p}{(}\PY{p}{[}\PY{n}{test\PYZus{}images}\PY{p}{,} \PY{n}{tf}\PY{o}{.}\PY{n}{one\PYZus{}hot}\PY{p}{(}\PY{n}{test\PYZus{}labels}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+              \PY{n}{train\PYZus{}losses} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+              \PY{n}{test\PYZus{}accuracies} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+              \PY{n}{valid\PYZus{}its} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+              \PY{n}{valid\PYZus{}accuracies} \PY{o}{=} \PY{p}{[}\PY{p}{]}
+                \PY{c+c1}{\PYZsh{}Thweid: Iterations increased as patience and increment intervals requires 375 values to be iterated over before exit}
+              \PY{n}{num\PYZus{}its} \PY{o}{=} \PY{l+m+mi}{2000}
+              \PY{k}{for} \PY{n}{it} \PY{o+ow}{in} \PY{n+nb}{range}\PY{p}{(}\PY{n}{num\PYZus{}its}\PY{p}{)}\PY{p}{:}
+                \PY{k}{if} \PY{p}{(}\PY{n}{it}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)} \PY{o}{\PYZpc{}} \PY{n}{validation\PYZus{}increment} \PY{o}{==} \PY{l+m+mi}{0}\PY{p}{:}
+                  \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Iteration }\PY{l+s+si}{\PYZpc{}d}\PY{l+s+s1}{/}\PY{l+s+si}{\PYZpc{}d}\PY{l+s+s1}{ ...}\PY{l+s+s1}{\PYZsq{}} \PY{o}{\PYZpc{}} \PY{p}{(}\PY{n}{it}\PY{p}{,} \PY{n}{num\PYZus{}its}\PY{p}{)}\PY{p}{)}
+        
+                  \PY{c+c1}{\PYZsh{} Validation accuracy}
+                  \PY{n}{valid\PYZus{}acc\PYZus{}cnn} \PY{o}{=} \PY{n}{sess}\PY{o}{.}\PY{n}{run}\PY{p}{(}\PY{n}{accuracy\PYZus{}cnn}\PY{p}{,} \PY{n}{feed\PYZus{}dict}\PY{o}{=}\PY{p}{\PYZob{}}\PY{n}{x}\PY{p}{:} \PY{n}{valid\PYZus{}batch\PYZus{}xs}\PY{p}{,} \PY{n}{y\PYZus{}}\PY{p}{:} \PY{n}{valid\PYZus{}batch\PYZus{}ys}\PY{p}{\PYZcb{}}\PY{p}{)}
+                  \PY{n}{valid\PYZus{}accuracies}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{valid\PYZus{}acc\PYZus{}cnn}\PY{p}{)}
+                  \PY{n}{valid\PYZus{}its}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{it}\PY{p}{)}
+        
+                  \PY{c+c1}{\PYZsh{}Thweid:Increase patience}
+                  \PY{c+c1}{\PYZsh{}       Check to see if a new max validity is found, reseting the max patience if so}
+                  \PY{c+c1}{\PYZsh{}       Verify patience hasn\PYZsq{}t been exhausted, exiting if so}
+                  \PY{n}{curr\PYZus{}patience} \PY{o}{+}\PY{o}{=} \PY{l+m+mi}{1}
+                  \PY{k}{if} \PY{p}{(}\PY{n}{valid\PYZus{}acc\PYZus{}cnn} \PY{o}{\PYZgt{}} \PY{n}{curr\PYZus{}max\PYZus{}accuracy}\PY{p}{)}\PY{p}{:}
+                    \PY{n}{saver}\PY{o}{.}\PY{n}{save}\PY{p}{(}\PY{n}{sess}\PY{p}{,} \PY{n}{best\PYZus{}sess\PYZus{}path}\PY{p}{)}
+                    \PY{n}{curr\PYZus{}max\PYZus{}accuracy} \PY{o}{=} \PY{n}{valid\PYZus{}acc\PYZus{}cnn}
+                    \PY{n}{curr\PYZus{}patience} \PY{o}{=} \PY{l+m+mi}{0}
+                  \PY{k}{if}\PY{p}{(}\PY{n}{curr\PYZus{}patience} \PY{o}{\PYZgt{}} \PY{n}{max\PYZus{}patience}\PY{p}{)}\PY{p}{:}
+                    \PY{n}{quit\PYZus{}flag} \PY{o}{=} \PY{k+kc}{True} 
+        
+        
+                \PY{n}{batch\PYZus{}xs}\PY{p}{,} \PY{n}{batch\PYZus{}ys} \PY{o}{=} \PY{n}{sess}\PY{o}{.}\PY{n}{run}\PY{p}{(}\PY{p}{[}\PY{n}{images}\PY{p}{,} \PY{n}{tf}\PY{o}{.}\PY{n}{one\PYZus{}hot}\PY{p}{(}\PY{n}{labels}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+                \PY{n}{loss\PYZus{}cnn\PYZus{}out}\PY{p}{,} \PY{n}{\PYZus{}} \PY{o}{=} \PY{n}{sess}\PY{o}{.}\PY{n}{run}\PY{p}{(}\PY{p}{[}\PY{n}{cross\PYZus{}entropy\PYZus{}cnn}\PY{p}{,} \PY{n}{train\PYZus{}step\PYZus{}cnn}\PY{p}{]}\PY{p}{,} \PY{n}{feed\PYZus{}dict}\PY{o}{=}\PY{p}{\PYZob{}}\PY{n}{x}\PY{p}{:} \PY{n}{batch\PYZus{}xs}\PY{p}{,} \PY{n}{y\PYZus{}}\PY{p}{:} \PY{n}{batch\PYZus{}ys}\PY{p}{\PYZcb{}}\PY{p}{)}
+        
+                \PY{n}{train\PYZus{}losses}\PY{o}{.}\PY{n}{append}\PY{p}{(}\PY{n}{loss\PYZus{}cnn\PYZus{}out}\PY{p}{)}
+        
+                \PY{c+c1}{\PYZsh{}Thweid: If flag set to quit, then stop going through validation set}
+                \PY{k}{if}\PY{p}{(}\PY{n}{quit\PYZus{}flag}\PY{p}{)}\PY{p}{:}
+                  \PY{k}{break}
+              
+              \PY{c+c1}{\PYZsh{}Thweid: Add Check to see if this was the best accuracy, updating if so}
+              \PY{c+c1}{\PYZsh{}        call garbage collector for attempted speedup}
+              \PY{k}{if}\PY{p}{(}\PY{n}{curr\PYZus{}max\PYZus{}accuracy} \PY{o}{\PYZgt{}} \PY{n}{best\PYZus{}valid\PYZus{}acc}\PY{p}{)}\PY{p}{:}
+                \PY{n}{best\PYZus{}valid\PYZus{}acc} \PY{o}{=} \PY{n}{curr\PYZus{}max\PYZus{}accuracy}
+                \PY{n}{saver}\PY{o}{.}\PY{n}{save}\PY{p}{(}\PY{n}{sess}\PY{p}{,} \PY{n}{best\PYZus{}sess\PYZus{}path}\PY{p}{)}
+              \PY{n}{gc}\PY{o}{.}\PY{n}{collect}\PY{p}{(}\PY{p}{)}
+        
+          \PY{c+c1}{\PYZsh{}Restore saved session}
+          \PY{n}{saver}\PY{o}{.}\PY{n}{restore}\PY{p}{(}\PY{n}{sess}\PY{p}{,} \PY{n}{best\PYZus{}sess\PYZus{}path}\PY{p}{)}
+        
+          \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Testing... }\PY{l+s+s1}{\PYZsq{}}\PY{o}{+}\PY{n+nb}{str}\PY{p}{(}\PY{n}{datetime}\PY{o}{.}\PY{n}{now}\PY{p}{(}\PY{p}{)}\PY{p}{)}\PY{p}{)}
+          \PY{c+c1}{\PYZsh{} \PYZsh{} Test trained model}
+          \PY{n}{test\PYZus{}batch\PYZus{}xs}\PY{p}{,} \PY{n}{test\PYZus{}batch\PYZus{}ys} \PY{o}{=} \PY{n}{sess}\PY{o}{.}\PY{n}{run}\PY{p}{(}\PY{p}{[}\PY{n}{test\PYZus{}images}\PY{p}{,} \PY{n}{tf}\PY{o}{.}\PY{n}{one\PYZus{}hot}\PY{p}{(}\PY{n}{test\PYZus{}labels}\PY{p}{,} \PY{l+m+mi}{10}\PY{p}{)}\PY{p}{]}\PY{p}{)}
+        
+          \PY{n}{true\PYZus{}label} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{n}{y\PYZus{}}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+          \PY{n}{cnn\PYZus{}label} \PY{o}{=} \PY{n}{tf}\PY{o}{.}\PY{n}{argmax}\PY{p}{(}\PY{n}{y\PYZus{}cnn}\PY{p}{,} \PY{l+m+mi}{1}\PY{p}{)}
+          \PY{n}{acc\PYZus{}cnn\PYZus{}out}\PY{p}{,} \PY{n}{true\PYZus{}label\PYZus{}out}\PY{p}{,} \PY{n}{cnn\PYZus{}label\PYZus{}out} \PY{o}{=} \PY{n}{sess}\PY{o}{.}\PY{n}{run}\PY{p}{(}\PY{p}{[}\PY{n}{accuracy\PYZus{}cnn}\PY{p}{,} \PY{n}{true\PYZus{}label}\PY{p}{,} \PY{n}{cnn\PYZus{}label}\PY{p}{]}\PY{p}{,} \PY{n}{feed\PYZus{}dict}\PY{o}{=}\PY{p}{\PYZob{}}\PY{n}{x}\PY{p}{:} \PY{n}{test\PYZus{}batch\PYZus{}xs}\PY{p}{,}
+                                                  \PY{n}{y\PYZus{}}\PY{p}{:} \PY{n}{test\PYZus{}batch\PYZus{}ys}\PY{p}{\PYZcb{}}\PY{p}{)}        
+                
+        \PY{c+c1}{\PYZsh{} Plot train loss and validation accuracy}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n+nb}{range}\PY{p}{(}\PY{n}{it}\PY{o}{+}\PY{l+m+mi}{1}\PY{p}{)}\PY{p}{,} \PY{n}{train\PYZus{}losses}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Training loss}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Iteration}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{plot}\PY{p}{(}\PY{n}{valid\PYZus{}its}\PY{p}{,} \PY{n}{valid\PYZus{}accuracies}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{ylabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Validation accuracy}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{xlabel}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Iteration}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+        \PY{n}{plt}\PY{o}{.}\PY{n}{show}\PY{p}{(}\PY{p}{)}
+        
+        \PY{n+nb}{print}\PY{p}{(}\PY{l+s+s1}{\PYZsq{}}\PY{l+s+s1}{Test accuracy: }\PY{l+s+s1}{\PYZsq{}} \PY{o}{+} \PY{n+nb}{str}\PY{p}{(}\PY{n}{acc\PYZus{}cnn\PYZus{}out}\PY{o}{*}\PY{l+m+mi}{100}\PY{p}{)}\PY{o}{+} \PY{l+s+s1}{\PYZsq{}}\PY{l+s+si}{\PYZpc{}\PYZpc{}}\PY{l+s+s1}{\PYZsq{}}\PY{p}{)}
+\end{Verbatim}
+
+
+    \begin{Verbatim}[commandchars=\\\{\}]
+Training{\ldots} 2018-05-20 23:17:42.975054
+Iteration 14/2000 {\ldots}
+Iteration 29/2000 {\ldots}
+Iteration 44/2000 {\ldots}
+Iteration 59/2000 {\ldots}
+Iteration 74/2000 {\ldots}
+Iteration 89/2000 {\ldots}
+Iteration 104/2000 {\ldots}
+Iteration 119/2000 {\ldots}
+Iteration 134/2000 {\ldots}
+Iteration 149/2000 {\ldots}
+Iteration 164/2000 {\ldots}
+Iteration 179/2000 {\ldots}
+Iteration 194/2000 {\ldots}
+Iteration 209/2000 {\ldots}
+Iteration 224/2000 {\ldots}
+Iteration 239/2000 {\ldots}
+Iteration 254/2000 {\ldots}
+Iteration 269/2000 {\ldots}
+Iteration 284/2000 {\ldots}
+Iteration 299/2000 {\ldots}
+Iteration 314/2000 {\ldots}
+Iteration 329/2000 {\ldots}
+Iteration 344/2000 {\ldots}
+Iteration 359/2000 {\ldots}
+Iteration 374/2000 {\ldots}
+Iteration 389/2000 {\ldots}
+Iteration 404/2000 {\ldots}
+Iteration 419/2000 {\ldots}
+Iteration 434/2000 {\ldots}
+Iteration 449/2000 {\ldots}
+Iteration 464/2000 {\ldots}
+Iteration 479/2000 {\ldots}
+Iteration 494/2000 {\ldots}
+Iteration 509/2000 {\ldots}
+Iteration 524/2000 {\ldots}
+Iteration 539/2000 {\ldots}
+Iteration 554/2000 {\ldots}
+Iteration 569/2000 {\ldots}
+Iteration 584/2000 {\ldots}
+Iteration 599/2000 {\ldots}
+Iteration 614/2000 {\ldots}
+Iteration 629/2000 {\ldots}
+Iteration 644/2000 {\ldots}
+Iteration 659/2000 {\ldots}
+Iteration 674/2000 {\ldots}
+Iteration 689/2000 {\ldots}
+Iteration 704/2000 {\ldots}
+Iteration 719/2000 {\ldots}
+Iteration 734/2000 {\ldots}
+Iteration 749/2000 {\ldots}
+Iteration 764/2000 {\ldots}
+Iteration 779/2000 {\ldots}
+Iteration 794/2000 {\ldots}
+Iteration 809/2000 {\ldots}
+Iteration 824/2000 {\ldots}
+Iteration 839/2000 {\ldots}
+Iteration 854/2000 {\ldots}
+Iteration 869/2000 {\ldots}
+Iteration 884/2000 {\ldots}
+Iteration 899/2000 {\ldots}
+Iteration 914/2000 {\ldots}
+Iteration 929/2000 {\ldots}
+Iteration 944/2000 {\ldots}
+Iteration 959/2000 {\ldots}
+Iteration 974/2000 {\ldots}
+Iteration 989/2000 {\ldots}
+Iteration 1004/2000 {\ldots}
+Iteration 1019/2000 {\ldots}
+Iteration 1034/2000 {\ldots}
+Iteration 1049/2000 {\ldots}
+Iteration 1064/2000 {\ldots}
+Iteration 1079/2000 {\ldots}
+Iteration 1094/2000 {\ldots}
+Iteration 1109/2000 {\ldots}
+Iteration 1124/2000 {\ldots}
+Iteration 1139/2000 {\ldots}
+Iteration 1154/2000 {\ldots}
+Iteration 1169/2000 {\ldots}
+Iteration 1184/2000 {\ldots}
+Iteration 1199/2000 {\ldots}
+Iteration 1214/2000 {\ldots}
+Iteration 1229/2000 {\ldots}
+Iteration 1244/2000 {\ldots}
+Iteration 1259/2000 {\ldots}
+Iteration 1274/2000 {\ldots}
+Iteration 1289/2000 {\ldots}
+Iteration 1304/2000 {\ldots}
+Iteration 1319/2000 {\ldots}
+Iteration 1334/2000 {\ldots}
+Iteration 1349/2000 {\ldots}
+Iteration 1364/2000 {\ldots}
+Iteration 1379/2000 {\ldots}
+Iteration 1394/2000 {\ldots}
+Iteration 1409/2000 {\ldots}
+Iteration 1424/2000 {\ldots}
+Iteration 1439/2000 {\ldots}
+Iteration 1454/2000 {\ldots}
+Iteration 1469/2000 {\ldots}
+Iteration 1484/2000 {\ldots}
+Iteration 1499/2000 {\ldots}
+Iteration 1514/2000 {\ldots}
+Iteration 1529/2000 {\ldots}
+Iteration 1544/2000 {\ldots}
+Iteration 1559/2000 {\ldots}
+Iteration 1574/2000 {\ldots}
+Iteration 1589/2000 {\ldots}
+Iteration 1604/2000 {\ldots}
+Iteration 1619/2000 {\ldots}
+Iteration 1634/2000 {\ldots}
+Iteration 1649/2000 {\ldots}
+Iteration 1664/2000 {\ldots}
+Iteration 1679/2000 {\ldots}
+Iteration 1694/2000 {\ldots}
+Iteration 1709/2000 {\ldots}
+Iteration 1724/2000 {\ldots}
+Iteration 1739/2000 {\ldots}
+Iteration 1754/2000 {\ldots}
+Iteration 1769/2000 {\ldots}
+Iteration 1784/2000 {\ldots}
+Iteration 1799/2000 {\ldots}
+Iteration 1814/2000 {\ldots}
+Iteration 1829/2000 {\ldots}
+Iteration 1844/2000 {\ldots}
+Iteration 1859/2000 {\ldots}
+Iteration 1874/2000 {\ldots}
+Iteration 1889/2000 {\ldots}
+Iteration 1904/2000 {\ldots}
+Iteration 1919/2000 {\ldots}
+Iteration 1934/2000 {\ldots}
+Iteration 1949/2000 {\ldots}
+Iteration 1964/2000 {\ldots}
+Iteration 1979/2000 {\ldots}
+Iteration 1994/2000 {\ldots}
+INFO:tensorflow:Restoring parameters from /tmp/model.ckpt
+Testing{\ldots} 2018-05-20 23:26:43.559973
+
+    \end{Verbatim}
+
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_23_1.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{center}
+    \adjustimage{max size={0.9\linewidth}{0.9\paperheight}}{output_23_2.png}
+    \end{center}
+    { \hspace*{\fill} \\}
+    
+    \begin{Verbatim}[commandchars=\\\{\}]
+Test accuracy: 55.000001192092896\%\%
+
+    \end{Verbatim}
+
+    If you are curious what the weights, activations, or confused images
+look like, we visualize them below. Feel free to modify this code to
+inspect other aspects of your trained model.
+
+    with sess.as\_default(): \# Show weights from the first layer
+print('Weights from the first layer') with
+tf.variable\_scope("conv2d\_1", reuse=True): weights =
+tf.get\_variable('kernel') plot\_filters(weights.eval())
+
+\# Show activations from the first feature map print('Activations from
+the first feature map.') fmap = cnnL1.eval(feed\_dict=\{x:
+test\_batch\_xs, y\_: test\_batch\_ys\})
+plot\_filters(np.transpose(fmap{[}0:1,...{]}, (1,2,0,3)))
+
+\# Show images in a confusion matrix confusion = np.zeros((24,24,3,100))
+for b in range(true\_label\_out.shape{[}0{]}):
+confusion{[}:,:,:,true\_label\_out{[}b{]}*10 + cnn\_label\_out{[}b{]}{]}
+= test\_batch\_xs{[}b{]}
+
+plot\_filters(confusion, ylabel='True label', xlabel='Guessed label')
+
+
+    % Add a bibliography block to the postdoc
+    
+    
+    
+    \end{document}
